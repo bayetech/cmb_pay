@@ -7,3 +7,6 @@
 /pkg/
 /spec/reports/
 /tmp/
+*.sublime-workspace
+spec/examples.txt
+.byebug_history
