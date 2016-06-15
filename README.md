@@ -1,4 +1,4 @@
-# Cmb::Pay
+# CmbPay
 
 An unofficial cmb (China Merchants Bank) pay ruby gem, inspired from [alipay](https://github.com/chloerei/alipay), [wx_pay](https://github.com/jasl/wx_pay) and [cmbchina](https://github.com/yellong/cmbchina) a lot.
 

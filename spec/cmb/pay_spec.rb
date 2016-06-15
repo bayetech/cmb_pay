@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Cmb::Pay do
+describe CmbPay do
   it 'has a version number' do
-    expect(Cmb::Pay::VERSION).not_to be nil
+    expect(CmbPay::VERSION).not_to be nil
   end
 
   it 'does something useful' do

@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'cmb/pay/version'
+require 'cmb_pay/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'cmb-pay'
-  spec.version       = Cmb::Pay::VERSION
+  spec.version       = CmbPay::VERSION
   spec.authors       = ['Eric Guo']
   spec.email         = ['eric.guocz@gmail.com']
 
