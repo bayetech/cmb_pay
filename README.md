@@ -20,7 +20,15 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Config
+
+Create `config/initializers/cmb_pay.rb` and put following configurations into it.
+
+```ruby
+# required
+CmbPay.branch_id = 'xxxx' # 支付商户开户分行号，4位
+CmbPay.co_no = '123456'   # 支付商户号/收单商户号，6位长数字，由银行在商户开户时确定
+```
 
 ## Development
 
