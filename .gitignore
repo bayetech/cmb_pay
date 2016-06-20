@@ -1,6 +1,6 @@
 # Ignore rubymine files
 /.idea
-
+.DS_Store
 /.bundle/
 /.yardoc
 /Gemfile.lock
