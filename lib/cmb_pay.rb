@@ -1,3 +1,4 @@
+require 'uri'
 require 'cmb_pay/version'
 require 'cmb_pay/service'
 
