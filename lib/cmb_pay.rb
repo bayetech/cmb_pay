@@ -1,5 +1,8 @@
+require 'date'
 require 'uri'
 require 'cmb_pay/version'
+require 'cmb_pay/sign/rsa'
+require 'cmb_pay/message'
 require 'cmb_pay/service'
 
 module CmbPay
@@ -27,5 +30,9 @@ module CmbPay
       'MerchantRetPara' => params[:MerchantRetPara]
     }
     Service.request_uri('PrePayEUserP', uri_params)
+  end
+
+  def self.cmb_pay_message(query_string)
+    CmbPay::Message.new query_string
   end
 end
