@@ -10,9 +10,10 @@ Gem::Specification.new do |spec|
   spec.email         = ['eric.guocz@gmail.com']
 
   spec.summary       = 'An unofficial cmb (China Merchants Bank) pay gem.'
-  spec.description   = 'Helping rubyist integration with cmb (China Merchants Bank) pay easier'
+  spec.description   = 'Helping rubyist integration with cmb (China Merchants Bank) payment service easier.'
   spec.homepage      = ''
   spec.license       = 'MIT'
+  spec.required_ruby_version = '~> 2.1'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(spec|features)/}) }
   spec.bindir        = 'exe'
