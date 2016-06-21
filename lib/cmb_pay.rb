@@ -13,7 +13,7 @@ module CmbPay
   end
   @environment = :production
 
-  def self.generate_PrePayEUserP_link(params, options = {})
+  def self.uri_of_PrePayEUserP(params, options = {})
     branch_id = options.delete(:branch_id)
     co_no = options.delete(:co_no)
     uri_params = {
