@@ -2,6 +2,7 @@ require 'date'
 require 'uri'
 require 'cmb_pay/version'
 require 'cmb_pay/sign/rsa'
+require 'cmb_pay/merchant_code'
 require 'cmb_pay/message'
 require 'cmb_pay/service'
 
