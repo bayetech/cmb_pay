@@ -20,8 +20,8 @@ module CmbPay
     # * +goods_type+ - 商品类型编码，长度限制为8字节。
     # * +reserved+ - 保留字段，长度限制为1024字节。
     def self.generate(random: '3.14', strkey:, date:, branch_id:, co_no:, bill_no:,
-                 amount:, merchant_para:, merchant_url:,
-                 payer_id:, payee_id:, client_ip: nil, goods_type: nil, reserved: '')
+                      amount:, merchant_para:, merchant_url:,
+                      payer_id:, payee_id:, client_ip: nil, goods_type: nil, reserved: nil)
       '|aGpDsEcbmOuYcSeT5rQhnl0Z18OKkuAJlvDJXaex3KJXCn7KJ9XYfiw*UhIW6/a*YRTH1ImLwYPMybevPLIOUx1y6WdEnfv84loW9JF8nvw3Hsv/IWQpLd80SawuxobNab5OMOxpLg==|acdc1b7113a47324c2209626d11fa632e1210b1c'
     end
 
