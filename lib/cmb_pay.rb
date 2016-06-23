@@ -4,7 +4,8 @@ require 'cmb_pay/version'
 require 'cmb_pay/util'
 require 'cmb_pay/sign/base64'
 require 'cmb_pay/sign/md5_key'
-require 'openssl' # For RSA/SHA1
+require 'openssl' # For RC4/RSA/SHA1
+require 'cmb_pay/sign/rc4'
 require 'cmb_pay/sign/rsa'
 require 'cmb_pay/sign/sha1'
 require 'cmb_pay/merchant_code'
