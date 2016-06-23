@@ -5,7 +5,7 @@ module CmbPay
     end
 
     def self.binary_to_hex(s)
-      s.each_byte.map { |b| b.to_s(16).rjust(2, '0') }.join
+      s.each_byte.map { |b| b.to_s(16).rjust(2, '0') }.join.upcase
     end
   end
 end
