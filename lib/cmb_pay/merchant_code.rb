@@ -1,6 +1,3 @@
-require 'digest/md5'
-require 'base64'
-
 module CmbPay
   module MerchantCode
     # 产生商户校验码
@@ -23,10 +20,6 @@ module CmbPay
                       amount:, merchant_para:, merchant_url:,
                       payer_id:, payee_id:, client_ip: nil, goods_type: nil, reserved: nil)
       '|aGpDsEcbmOuYcSeT5rQhnl0Z18OKkuAJlvDJXaex3KJXCn7KJ9XYfiw*UhIW6/a*YRTH1ImLwYPMybevPLIOUx1y6WdEnfv84loW9JF8nvw3Hsv/IWQpLd80SawuxobNab5OMOxpLg==|acdc1b7113a47324c2209626d11fa632e1210b1c'
-    end
-
-    def self.md5_hash(strkey)
-      Digest::MD5.hexdigest(strkey.encode('gb2312')).upcase
     end
   end
 end
