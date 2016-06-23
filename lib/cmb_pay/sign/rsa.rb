@@ -1,5 +1,3 @@
-require 'openssl'
-
 module CmbPay
   module Sign
     module Rsa
