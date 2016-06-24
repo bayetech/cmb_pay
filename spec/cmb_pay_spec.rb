@@ -7,7 +7,7 @@ describe CmbPay do
     CmbPay
   end
 
-  describe '#uri_of_PrePayEUserP' do
+  describe '#uri_of_pre_pay_euserp' do
     specify 'will return PrePayEUserP URI' do
       params = {
         BillNo: 'my_bill_no',
@@ -18,7 +18,7 @@ describe CmbPay do
         MerchantRetPara: 'browser_return_para'
       }
       prepay_date = Time.now.strftime('%Y%m%d')
-      expect(subject.uri_of_PrePayEUserP(params).query).to eq 'BranchID=bdzh&CoNo=123456&BillNo=my_bill_no&Amount=123.45&Date=' + prepay_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=my_website_para&MerchantCode=xx&MerchantRetUrl=browser_return_url&MerchantRetPara=browser_return_para'
+      expect(subject.uri_of_pre_pay_euserp(params).query).to eq 'BranchID=bdzh&CoNo=123456&BillNo=my_bill_no&Amount=123.45&Date=' + prepay_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=my_website_para&MerchantCode=xx&MerchantRetUrl=browser_return_url&MerchantRetPara=browser_return_para'
     end
   end
 
