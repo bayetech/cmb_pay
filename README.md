@@ -1,4 +1,5 @@
-# CmbPay
+CmbPay [![Gem Version][version-badge]][rubygems] [![Build Status][travis-badge]][travis] [![Code Climate][codeclimate-badge]][codeclimate] [![Code Coverage][codecoverage-badge]][codecoverage]
+======
 
 An unofficial cmb (China Merchants Bank) pay ruby gem, inspired from [alipay](https://github.com/chloerei/alipay), [wx_pay](https://github.com/jasl/wx_pay) and [cmbchina](https://github.com/yellong/cmbchina) a lot.
 
@@ -44,4 +45,13 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+
+[version-badge]: https://badge.fury.io/rb/cmb-pay.svg
+[rubygems]: https://rubygems.org/gems/cmb-pay
+[travis-badge]: https://travis-ci.org/bayetech/cmb-pay.svg
+[travis]: https://travis-ci.org/bayetech/cmb-pay
+[codeclimate-badge]: https://codeclimate.com/github/bayetech/cmb-pay.png
+[codeclimate]: https://codeclimate.com/github/bayetech/cmb-pay
+[codecoverage-badge]: https://codeclimate.com/github/bayetech/cmb-pay/coverage.png
+[codecoverage]: https://codeclimate.com/github/bayetech/cmb-pay/coverage
 
