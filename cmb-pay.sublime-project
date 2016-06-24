@@ -4,7 +4,7 @@
     {
       "path": ".",
       "folder_exclude_patterns": [".bundle",".idea","tmp","log","pkg","coverage"],
-      "file_exclude_patterns": ["*.sublime-workspace",".DS_Store","*.sqlite3","spec/examples.txt",".byebug_history"]
+      "file_exclude_patterns": ["*.sublime-workspace","public.key",".DS_Store","*.sqlite3","spec/examples.txt",".byebug_history"]
     }
   ],
   "settings":
