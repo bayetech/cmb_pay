@@ -22,16 +22,16 @@ module CmbPay
       last_3 = optional_last_3(client_ips: client_ips, goods_type: goods_type, reserved: reserved)
       combine_part1 = pay_to_in_RC4(random: random, strkey: strkey, payer_id: payer_id, payee_id: payee_id, opt_last_3: last_3)
       combine_part2 = "#{strkey}#{combine_part1}#{date}#{branch_id}#{co_no}#{bill_no}#{amount}#{merchant_para}#{merchant_url}"
-      "|#{combine_part1}|#{Sign::SHA1.digest(combine_part2)}"
+      "|#{combine_part1}|#{Sign.sha1_digest(combine_part2)}"
     end
 
     private
 
     def self.pay_to_in_RC4(random:, strkey:, payer_id:, payee_id:, opt_last_3:)
       in_data = "#{random}|#{payer_id}<$CmbSplitter$>#{payee_id}#{opt_last_3}"
-      key_md5_digest = Sign::MD5key.digest(strkey)
-      encrypted = CmbPay::Sign::RC4.encrypt(key_md5_digest, in_data)
-      CmbPay::Sign::Base64.encode64(encrypted)
+      key_md5_digest = Sign.md5_key_digest(strkey)
+      encrypted = Sign.rc4_encrypt(key_md5_digest, in_data)
+      Sign.encode_base64(encrypted)
     end
 
     def self.optional_last_3(client_ips: nil, goods_type: nil, reserved: nil)
