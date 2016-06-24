@@ -42,7 +42,7 @@ module CmbPay
     end
 
     def valid?
-      CmbPay::Sign::Rsa.verify(query_string)
+      Sign::Sha1WithRsa.verify(query_string)
     end
 
     def succeed?
