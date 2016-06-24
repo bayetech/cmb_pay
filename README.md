@@ -50,8 +50,7 @@ The gem is available as open source under the terms of the [MIT License](http://
 [rubygems]: https://rubygems.org/gems/cmb-pay
 [travis-badge]: https://travis-ci.org/bayetech/cmb-pay.svg
 [travis]: https://travis-ci.org/bayetech/cmb-pay
-[codeclimate-badge]: https://codeclimate.com/github/bayetech/cmb-pay.png
+[codeclimate-badge]: https://codeclimate.com/github/bayetech/cmb-pay/badges/gpa.svg
 [codeclimate]: https://codeclimate.com/github/bayetech/cmb-pay
-[codecoverage-badge]: https://codeclimate.com/github/bayetech/cmb-pay/coverage.png
+[codecoverage-badge]: https://codeclimate.com/github/bayetech/cmb-pay/badges/coverage.svg
 [codecoverage]: https://codeclimate.com/github/bayetech/cmb-pay/coverage
-
