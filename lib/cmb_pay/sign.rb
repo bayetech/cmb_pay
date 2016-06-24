@@ -20,9 +20,8 @@ module CmbPay
 
       # 验证数字签名
       def self.verify(param_string)
-        # pub = OpenSSL::PKey::RSA.new(CmbPay.public_key)
-        # pub.verify('sha1', signature(param_string), plain_text(param_string))
-        true # TODO: comment out when having valid testing case
+        pub = OpenSSL::PKey::RSA.new(CmbPay::Service::PUBLIC_KEY)
+        pub.verify('sha1', signature(param_string), plain_text(param_string))
       end
     end
 

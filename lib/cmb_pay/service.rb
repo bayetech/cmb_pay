@@ -11,6 +11,8 @@ module CmbPay
       }
     }.freeze
 
+    PUBLIC_KEY = File.read(File.expand_path('./public.key', __dir__)).freeze
+
     def self.request_gateway_url(api_action)
       GATEWAY_URL[CmbPay.environment.to_sym][api_action.to_sym]
     end

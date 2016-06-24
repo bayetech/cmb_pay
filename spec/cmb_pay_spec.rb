@@ -26,7 +26,7 @@ describe CmbPay do
     specify 'will return a new CmbPay::Message' do
       query_params = 'Succeed=Y&CoNo=xxxxxx&BillNo=xxxxxx&Amount=123.45&Date=20160621&MerchantPara=xxxx&Msg=bdzh1234562016062209876543211234567890&Signature=xxxxxxx'
       message = subject.cmb_pay_message(query_params)
-      expect(message.valid?).to be_truthy
+      expect(message.valid?).to be false # TODO: Need a real example
       expect(message.succeed?).to be_truthy
       expect(message.co_no).to eq 'xxxxxx'
       expect(message.amount_cents).to eq 12345
