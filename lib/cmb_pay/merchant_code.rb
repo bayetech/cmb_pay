@@ -1,5 +1,10 @@
 module CmbPay
   module MerchantCode
+    class << self
+      attr_accessor :random_generator
+    end
+    @random_generator = Random.new
+
     # 产生商户校验码
     #
     # * +random+ - 随机数
@@ -16,9 +21,10 @@ module CmbPay
     # * +client_ips+ - 商户取得的客户端IP，如果有多个IP用逗号','分隔。长度限制为64字节。
     # * +goods_type+ - 商品类型编码，长度限制为8字节。
     # * +reserved+ - 保留字段，长度限制为1024字节。
-    def self.generate(random: '3.14', strkey:, date:, branch_id:, co_no:, bill_no:,
+    def self.generate(random: nil, strkey:, date:, branch_id:, co_no:, bill_no:,
                       amount:, merchant_para:, merchant_url:,
                       payer_id:, payee_id:, client_ips: nil, goods_type: nil, reserved: nil)
+      random = random_generator.rand if random.nil?
       last_3 = optional_last_3(client_ips: client_ips, goods_type: goods_type, reserved: reserved)
       combine_part1 = pay_to_in_rc4(random: random, strkey: strkey, payer_id: payer_id, payee_id: payee_id, opt_last_3: last_3)
       combine_part2 = "#{strkey}#{combine_part1}#{date}#{branch_id}#{co_no}#{bill_no}#{amount}#{merchant_para}#{merchant_url}"
