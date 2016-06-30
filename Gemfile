@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in cmb-pay.gemspec
+# Specify your gem's dependencies in cmb_pay.gemspec
 gemspec
 
 gem 'simplecov', require: false, group: :test

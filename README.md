@@ -8,7 +8,7 @@ An unofficial cmb (China Merchants Bank) pay ruby gem, inspired from [alipay](ht
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'cmb-pay'
+gem 'cmb_pay'
 ```
 
 And then execute:
@@ -17,7 +17,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install cmb-pay
+    $ gem install cmb_pay
 
 ## Usage
 
@@ -39,18 +39,18 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/bayetech/cmb-pay. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/bayetech/cmb_pay. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
-[version-badge]: https://badge.fury.io/rb/cmb-pay.svg
-[rubygems]: https://rubygems.org/gems/cmb-pay
-[travis-badge]: https://travis-ci.org/bayetech/cmb-pay.svg
-[travis]: https://travis-ci.org/bayetech/cmb-pay
-[codeclimate-badge]: https://codeclimate.com/github/bayetech/cmb-pay/badges/gpa.svg
-[codeclimate]: https://codeclimate.com/github/bayetech/cmb-pay
-[codecoverage-badge]: https://codeclimate.com/github/bayetech/cmb-pay/badges/coverage.svg
-[codecoverage]: https://codeclimate.com/github/bayetech/cmb-pay/coverage
+[version-badge]: https://badge.fury.io/rb/cmb_pay.svg
+[rubygems]: https://rubygems.org/gems/cmb_pay
+[travis-badge]: https://travis-ci.org/bayetech/cmb_pay.svg
+[travis]: https://travis-ci.org/bayetech/cmb_pay
+[codeclimate-badge]: https://codeclimate.com/github/bayetech/cmb_pay/badges/gpa.svg
+[codeclimate]: https://codeclimate.com/github/bayetech/cmb_pay
+[codecoverage-badge]: https://codeclimate.com/github/bayetech/cmb_pay/badges/coverage.svg
+[codecoverage]: https://codeclimate.com/github/bayetech/cmb_pay/coverage

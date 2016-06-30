@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'An unofficial cmb (China Merchants Bank) pay gem.'
   spec.description   = 'Helping rubyist integration with cmb (China Merchants Bank) payment service easier.'
-  spec.homepage      = 'https://github.com/bayetech/cmb-pay'
+  spec.homepage      = 'https://github.com/bayetech/cmb_pay'
   spec.license       = 'MIT'
   spec.required_ruby_version = '~> 2.1'
 
