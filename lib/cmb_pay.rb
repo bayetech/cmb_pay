@@ -17,17 +17,18 @@ module CmbPay
   @expire_in_minutes = 30
   @environment = :production
 
-  def self.uri_of_pre_pay_euserp(bill_no:, amount:, merchant_url:, merchant_para:,
+  def self.uri_of_pre_pay_euserp(bill_no:, amount_in_cents:, merchant_url:, merchant_para:,
                                  merchant_ret_url: nil, merchant_ret_para: nil,
                                  options: {})
     branch_id = options.delete(:branch_id)
     co_no = options.delete(:co_no)
     expire_in_minutes = options.delete(:expire_in_minutes)
+    pay_in_yuan, pay_in_cent = amount_in_cents.to_i.divmod(100)
     uri_params = {
       'BranchID' => branch_id || CmbPay.branch_id,
       'CoNo'     => co_no || CmbPay.co_no,
       'BillNo'   => bill_no,
-      'Amount'   => amount,
+      'Amount'   => "#{pay_in_yuan}.#{pay_in_cent}",
       'Date'     => Time.now.strftime('%Y%m%d'),
       'ExpireTimeSpan' => expire_in_minutes || CmbPay.expire_in_minutes,
       'MerchantUrl' => merchant_url,
