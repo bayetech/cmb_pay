@@ -10,10 +10,12 @@ describe CmbPay do
   describe '#uri_of_pre_pay_euserp' do
     specify 'will return PrePayEUserP URI' do
       prepay_date = Time.now.strftime('%Y%m%d')
-      expect(subject.uri_of_pre_pay_euserp(bill_no: 'my_bill_no', amount_in_cents: '12345',
-                                           merchant_url: 'my_website_url', merchant_para: 'my_website_para',
-                                           merchant_ret_url: 'browser_return_url', merchant_ret_para: 'browser_return_para').query)
-        .to eq 'BranchID=bdzh&CoNo=123456&BillNo=my_bill_no&Amount=123.45&Date=' + prepay_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=my_website_para&MerchantCode=xx&MerchantRetUrl=browser_return_url&MerchantRetPara=browser_return_para'
+      uri = subject.uri_of_pre_pay_euserp(payer_id: 1, bill_no: 'my_bill_no', amount_in_cents: '12345',
+                                          merchant_url: 'my_website_url', merchant_para: 'my_website_para',
+                                          merchant_ret_url: 'browser_return_url',
+                                          merchant_ret_para: 'browser_return_para', options: { random: '3.14' })
+      expect_result = 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?BranchID=bdzh&CoNo=123456&BillNo=my_bill_no&Amount=123.45&Date=' + prepay_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=my_website_para&MerchantCode=%7CVkLiT8ioPQBO8m1cyanuKW%2FybtMo%7Cb461ca16075155fc18da1fbc4d23264397a8aa95&MerchantRetUrl=browser_return_url&MerchantRetPara=browser_return_para'
+      expect(uri.to_s).to eq expect_result
     end
   end
 

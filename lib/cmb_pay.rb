@@ -12,28 +12,41 @@ module CmbPay
     attr_accessor :branch_id # 开户分行号
     attr_accessor :co_no     # 支付商户号/收单商户号
     attr_accessor :expire_in_minutes # 会话有效时间
-    attr_accessor :environment
+    attr_accessor :environment # 调用的招商银行支付环境，默认生产，测试填test
+    attr_accessor :co_key    # 商户校验码，测试环境为空
+    attr_accessor :default_payee_id # 默认收款方的用户标识
   end
   @expire_in_minutes = 30
   @environment = :production
+  @co_key = ''
 
-  def self.uri_of_pre_pay_euserp(bill_no:, amount_in_cents:, merchant_url:, merchant_para:,
+  def self.uri_of_pre_pay_euserp(payer_id:, bill_no:, amount_in_cents:, merchant_url:, merchant_para:,
                                  merchant_ret_url: nil, merchant_ret_para: nil,
                                  options: {})
-    branch_id = options.delete(:branch_id)
-    co_no = options.delete(:co_no)
-    expire_in_minutes = options.delete(:expire_in_minutes)
+    branch_id = options.delete(:branch_id) || CmbPay.branch_id
+    co_no = options.delete(:co_no) || CmbPay.co_no
+    co_key = options.delete(:co_key) || CmbPay.co_key
+    expire_in_minutes = options.delete(:expire_in_minutes) || CmbPay.expire_in_minutes
     pay_in_yuan, pay_in_cent = amount_in_cents.to_i.divmod(100)
+    pay_amount = "#{pay_in_yuan}.#{pay_in_cent}"
+    trade_date = options.delete(:trade_date) || Time.now.strftime('%Y%m%d')
+    payee_id = options.delete(:payee_id) || CmbPay.default_payee_id
+    random = options.delete(:random)
+    m_code = MerchantCode.generate(random: random, strkey: co_key, date: trade_date,
+                                   branch_id: branch_id, co_no: co_no,
+                                   bill_no: bill_no, amount: pay_amount,
+                                   merchant_para: merchant_para, merchant_url: merchant_url,
+                                   payer_id: payer_id, payee_id: payee_id)
     uri_params = {
-      'BranchID' => branch_id || CmbPay.branch_id,
-      'CoNo'     => co_no || CmbPay.co_no,
+      'BranchID' => branch_id,
+      'CoNo'     => co_no,
       'BillNo'   => bill_no,
-      'Amount'   => "#{pay_in_yuan}.#{pay_in_cent}",
-      'Date'     => Time.now.strftime('%Y%m%d'),
-      'ExpireTimeSpan' => expire_in_minutes || CmbPay.expire_in_minutes,
+      'Amount'   => pay_amount,
+      'Date'     => trade_date,
+      'ExpireTimeSpan' => expire_in_minutes,
       'MerchantUrl' => merchant_url,
       'MerchantPara' => merchant_para,
-      'MerchantCode' => 'xx', # TODO: Need implement
+      'MerchantCode' => m_code
     }
     uri_params['MerchantRetUrl'] = merchant_ret_url unless merchant_ret_url.nil?
     uri_params['MerchantRetPara'] = merchant_ret_para unless merchant_ret_para.nil?
