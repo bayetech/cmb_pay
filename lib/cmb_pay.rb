@@ -33,7 +33,7 @@ module CmbPay
     cmb_bill_no = format('%010d', bill_no.to_i % 10_000_000_000)
     expire_in_minutes = options.delete(:expire_in_minutes) || CmbPay.expire_in_minutes
     pay_in_yuan, pay_in_cent = amount_in_cents.to_i.divmod(100)
-    pay_amount = "#{pay_in_yuan}.#{pay_in_cent}"
+    pay_amount = "#{pay_in_yuan}.#{format('%02d', pay_in_cent)}"
     trade_date = options.delete(:trade_date) || Time.now.strftime('%Y%m%d')
     payee_id = options.delete(:payee_id) || CmbPay.default_payee_id
     random = options.delete(:random)
