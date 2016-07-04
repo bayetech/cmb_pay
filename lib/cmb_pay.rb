@@ -1,5 +1,6 @@
 require 'date'
 require 'uri'
+require 'active_support/core_ext/hash'
 require 'cmb_pay/version'
 require 'cmb_pay/util'
 require 'cmb_pay/sign'
@@ -11,17 +12,19 @@ module CmbPay
   class << self
     attr_accessor :branch_id # 开户分行号
     attr_accessor :co_no     # 支付商户号/收单商户号
+    attr_accessor :co_key    # 商户校验码，测试环境为空
+    attr_accessor :mch_no    # 协议商户企业编号，或者说是8位虚拟企业网银编号
     attr_accessor :expire_in_minutes # 会话有效时间
     attr_accessor :environment # 调用的招商银行支付环境，默认生产，测试填test
-    attr_accessor :co_key    # 商户校验码，测试环境为空
     attr_accessor :default_payee_id # 默认收款方的用户标识
   end
+  @co_key = ''
+  @mch_no = ''
   @expire_in_minutes = 30
   @environment = :production
-  @co_key = ''
 
   def self.uri_of_pre_pay_euserp(payer_id:, bill_no:, amount_in_cents:, merchant_url:, merchant_para:,
-                                 merchant_ret_url: nil, merchant_ret_para: nil,
+                                 protocol:, merchant_ret_url: nil, merchant_ret_para: nil,
                                  options: {})
     branch_id = options.delete(:branch_id) || CmbPay.branch_id
     co_no = options.delete(:co_no) || CmbPay.co_no
@@ -32,11 +35,14 @@ module CmbPay
     trade_date = options.delete(:trade_date) || Time.now.strftime('%Y%m%d')
     payee_id = options.delete(:payee_id) || CmbPay.default_payee_id
     random = options.delete(:random)
+    protocol[:TS] = Time.now.strftime('%Y%m%d%H%M%S') unless protocol[:TS].nil?
+    protocol[:MchNo] = CmbPay.mch_no
     m_code = MerchantCode.generate(random: random, strkey: co_key, date: trade_date,
                                    branch_id: branch_id, co_no: co_no,
                                    bill_no: bill_no, amount: pay_amount,
                                    merchant_para: merchant_para, merchant_url: merchant_url,
-                                   payer_id: payer_id, payee_id: payee_id)
+                                   payer_id: payer_id, payee_id: payee_id,
+                                   reserved: protocol.to_xml(root: 'Protocol', skip_instruct: true, skip_types: true, indent: 0))
     uri_params = {
       'BranchID' => branch_id,
       'CoNo'     => co_no,
