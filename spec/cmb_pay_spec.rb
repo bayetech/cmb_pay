@@ -10,7 +10,7 @@ describe CmbPay do
   describe '#uri_of_pre_pay_euserp' do
     specify 'will return PrePayEUserP URI' do
       prepay_date = Time.now.strftime('%Y%m%d')
-      uri = subject.uri_of_pre_pay_euserp(payer_id: 1, bill_no: 'my_bill_no', amount_in_cents: '12345',
+      uri = subject.uri_of_pre_pay_euserp(payer_id: 1, bill_no: 654321, amount_in_cents: '12345',
                                           merchant_url: 'my_website_url', merchant_para: 'my_website_para',
                                           merchant_ret_url: 'browser_return_url',
                                           merchant_ret_para: 'browser_return_para',
@@ -18,7 +18,7 @@ describe CmbPay do
                                                       'Seq' => 12345,
                                                       'TS' => '20160704151104' },
                                           options: { random: '3.14' })
-      expect_result = 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?BranchID=bdzh&CoNo=123456&BillNo=my_bill_no&Amount=123.45&Date=20160704&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=my_website_para&MerchantCode=%7CVkLiT8ioPQBO8m1cyanuKW%2FybtMozdCxKa7R*MZAVVPxIToRm0IkGCMaCXe8ss%2FinkoaDk8av07VzGlc7oZuKpnjykXWevGIQFniHCe1Qd6Tgy7pqDpW2DWYs5kk0bAAgJUFhxH4bZuJk55ZJN7wgxvr*6yZfKjw%2FevlwidYFa%2FgWqIltA%3D%3D%7C1cdeaacbb7c3964c8468c0bef5c86acace711cbc&MerchantRetUrl=browser_return_url&MerchantRetPara=browser_return_para'
+      expect_result = 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?BranchID=bdzh&CoNo=123456&BillNo=0000654321&Amount=123.45&Date=20160704&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=my_website_para&MerchantCode=%7CVkLiT8ioPQBO8m1cyanuKW%2FybtMozdCxKa7R*MZAVVPxIToRm0IkGCMaCXe8ss%2FinkoaDk8av07VzGlc7oZuKpnjykXWevGIQFniHCe1Qd6Tgy7pqDpW2DWYs5kk0bAAgJUFhxH4bZuJk55ZJN7wgxvr*6yZfKjw%2FevlwidYFa%2FgWqIltA%3D%3D%7C97ac1a916d390c6bb695e192d5a79568f76cc87e&MerchantRetUrl=browser_return_url&MerchantRetPara=browser_return_para'
       expect(uri.to_s).to eq expect_result
     end
   end

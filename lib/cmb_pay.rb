@@ -29,6 +29,8 @@ module CmbPay
     branch_id = options.delete(:branch_id) || CmbPay.branch_id
     co_no = options.delete(:co_no) || CmbPay.co_no
     co_key = options.delete(:co_key) || CmbPay.co_key
+    # 定单号，6位或10位长数字，由商户系统生成，一天内不能重复；
+    cmb_bill_no = format('%010d', bill_no.to_i % 10_000_000_000)
     expire_in_minutes = options.delete(:expire_in_minutes) || CmbPay.expire_in_minutes
     pay_in_yuan, pay_in_cent = amount_in_cents.to_i.divmod(100)
     pay_amount = "#{pay_in_yuan}.#{pay_in_cent}"
@@ -39,14 +41,14 @@ module CmbPay
     protocol[:MchNo] = CmbPay.mch_no
     m_code = MerchantCode.generate(random: random, strkey: co_key, date: trade_date,
                                    branch_id: branch_id, co_no: co_no,
-                                   bill_no: bill_no, amount: pay_amount,
+                                   bill_no: cmb_bill_no, amount: pay_amount,
                                    merchant_para: merchant_para, merchant_url: merchant_url,
                                    payer_id: payer_id, payee_id: payee_id,
                                    reserved: protocol.to_xml(root: 'Protocol', skip_instruct: true, skip_types: true, indent: 0))
     uri_params = {
       'BranchID' => branch_id,
       'CoNo'     => co_no,
-      'BillNo'   => bill_no,
+      'BillNo'   => cmb_bill_no,
       'Amount'   => pay_amount,
       'Date'     => trade_date,
       'ExpireTimeSpan' => expire_in_minutes,
