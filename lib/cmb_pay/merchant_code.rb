@@ -42,9 +42,9 @@ module CmbPay
 
     def self.optional_last_3(client_ips: nil, goods_type: nil, reserved: nil)
       r = ''
-      r << "<$ClientIP$>#{client_ips}</$ClientIP$>" unless client_ips.nil?
-      r << "<$GoodsType$>#{goods_type}</$GoodsType$>" unless goods_type.nil?
-      r << "<$Reserved$>#{reserved}</$Reserved$>" unless reserved.nil?
+      r << "<$ClientIP$>#{client_ips}</$ClientIP$>" unless client_ips.to_s == ''
+      r << "<$GoodsType$>#{goods_type}</$GoodsType$>" unless goods_type.to_s == ''
+      r << "<$Reserved$>#{reserved}</$Reserved$>" unless reserved.to_s == ''
       r
     end
   end
