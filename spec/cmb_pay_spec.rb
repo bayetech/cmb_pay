@@ -2,8 +2,11 @@ require 'spec_helper'
 
 describe CmbPay do
   subject do
-    CmbPay.branch_id = 'bdzh'
-    CmbPay.co_no = '123456'
+    CmbPay.branch_id = '0755'
+    CmbPay.co_no = '000257'
+    CmbPay.co_key = ''
+    CmbPay.mch_no = 'P0019844'
+    CmbPay.default_payee_id = '1'
     CmbPay
   end
 
@@ -17,10 +20,10 @@ describe CmbPay do
                                           merchant_ret_para: 'browser_return_para',
                                           protocol: { 'PNo' => 1,
                                                       'Seq' => 12345,
-                                                      'TS' => '20160704151104' },
+                                                      'TS' => '20160704190627' },
                                           options: { random: '3.14' })
-      expect_result = 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?PrePayEUserP?BranchID=bdzh&CoNo=123456&BillNo=0000654321&Amount=123.45&Date=' \
-        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=my_website_para&MerchantCode=%7CVkLiT8ioPQBO8m1cyanuKW%2FybtMozdCxKa7R*MZAVVPxIToRm0IkGCMaCXe8ss%2FinkoaDk8av07S*iZQ74VrLpvv0SeGOv6EIDbzekS6S6PH21S3ozdIpWLM0qJJ098oksN62hzwd*rFqLVHJN7wgxvr*6yZfKjw%2FevlwidYFa%2FgWqIltA%3D%3D%7C30630eabb4dc830532620d2a0226470a7c4eebbd&MerchantRetUrl=browser_return_url&MerchantRetPara=browser_return_para'
+      expect_result = 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?PrePayEUserP?BranchID=0755&CoNo=000257&BillNo=0000654321&Amount=123.45&Date=' \
+        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=my_website_para&MerchantCode=%7CVkLiT8ioPQBO8m1cyanuKW%2FybtMowMjHHrjH78JTVBPrI1Yzhlk%2FFC8ZW3XQrO6zkUcJcVE77ky6%2FUtc7YRsKJzo1SKCMv*CJj3gAUPXSdLp0HKW8jU32DGVpfVD27Birp4jpkD6foWPiu4HKNHr5lWr3KaLLfjhkbau5C1IH7GoA*kl2FTNocZU8Z7B0g%3D%3D%7C26d4a8ecd0bb78db969465f71e9c518beedff5e3&MerchantRetUrl=browser_return_url&MerchantRetPara=browser_return_para'
       expect(uri.to_s).to eq expect_result
     end
   end
