@@ -23,8 +23,8 @@ module CmbPay
   @expire_in_minutes = 30
   @environment = :production
 
-  def self.uri_of_pre_pay_euserp(payer_id:, bill_no:, amount_in_cents:, merchant_url:, merchant_para: nil,
-                                 protocol:, merchant_ret_url:, merchant_ret_para: nil,
+  def self.uri_of_pre_pay_euserp(payer_id:, bill_no:, amount_in_cents:, merchant_url:, merchant_para: '',
+                                 protocol:, merchant_ret_url:, merchant_ret_para: '',
                                  options: {})
     branch_id = options.delete(:branch_id) || CmbPay.branch_id
     co_no = options.delete(:co_no) || CmbPay.co_no
