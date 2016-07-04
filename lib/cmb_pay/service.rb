@@ -19,7 +19,7 @@ module CmbPay
 
     def self.request_uri(api_action, params)
       uri = URI(request_gateway_url(api_action))
-      uri.query = URI.encode_www_form(params)
+      uri.query = "#{uri.query}?#{URI.encode_www_form(params)}"
       uri
     end
   end
