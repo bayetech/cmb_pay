@@ -50,6 +50,7 @@ module CmbPay
       'CoNo'     => co_no,
       'BillNo'   => cmb_bill_no,
       'Amount'   => pay_amount,
+      'Date'     => trade_date,
       'ExpireTimeSpan' => expire_in_minutes,
       'MerchantUrl' => merchant_url,
       'MerchantPara' => merchant_para,
