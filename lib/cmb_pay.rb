@@ -41,7 +41,10 @@ module CmbPay
       'PNo' => protocol['PNo'],
       'TS' => protocol['TS'] || Time.now.strftime('%Y%m%d%H%M%S'),
       'MchNo' => CmbPay.mch_no,
-      'Seq' => protocol['Seq']
+      'Seq' => protocol['Seq'],
+      'MUID' => payer_id,
+      'URL' => merchant_url,
+      'Para' => merchant_para
     }
     m_code = MerchantCode.generate(random: random, strkey: co_key, date: trade_date,
                                    branch_id: branch_id, co_no: co_no,

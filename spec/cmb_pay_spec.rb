@@ -23,7 +23,7 @@ describe CmbPay do
                                                       'TS' => '20160704190627' },
                                           options: { random: '3.14' })
       expect_result = 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?PrePayEUserP?BranchID=0755&CoNo=000257&BillNo=0000654321&Amount=123.45&Date=' \
-        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=my_website_para&MerchantCode=%7CVkLiT8ioPQBO8m1cyanuKW%2FybtMowMjHHrjH78JTVBPrI1Yzhlk%2FFC8ZW3XQrO6zkUcJcVE77ky6%2FUtc7YRsKJzo1SKCMv*CJj3gAUPXSdLp0HKW8jU32DGVpfVD27Birp4jpkD6foWPiu4HKNHr5lWr3KaLLfjhkbau5C1IH7GoA*kl2FTNocZU8Z7B0g%3D%3D%7C26d4a8ecd0bb78db969465f71e9c518beedff5e3&MerchantRetUrl=browser_return_url&MerchantRetPara=browser_return_para'
+        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=my_website_para&MerchantCode=%7CVkLiT8ioPQBO8m1cyanuKW%2FybtMowMjHHrjH78JTVBPrI1Yzhlk%2FFC8ZW3XQrO6zkUcJcVE77ky6%2FUtc7YRsKJzo1SKCMv*CJj3gAUPXSdLp0HKW8jU32DGVpfVD27Birp4jpkD6foWPiu4HKNHr5lWr3KaLLfiDlI2FrnMXX5DDdoI%2FtmTsiIpP7aWSifFOIOqLk*kJxBlFlCwNc6OW*5wnPcsmNbn6OAbEv9Q4lGMvO3P7LRCNxSNDU2twi89mJoyVjVIjLWINuos9gh1N*f4%3D%7Cf17dcef489a392b4d80edd8738f98a7d908c23f1&MerchantRetUrl=browser_return_url&MerchantRetPara=browser_return_para'
       expect(uri.to_s).to eq expect_result
     end
   end
