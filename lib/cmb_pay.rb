@@ -23,8 +23,8 @@ module CmbPay
   @expire_in_minutes = 30
   @environment = :production
 
-  def self.uri_of_pre_pay_euserp(payer_id:, bill_no:, amount_in_cents:, merchant_url:, merchant_para:,
-                                 protocol:, merchant_ret_url: nil, merchant_ret_para: nil,
+  def self.uri_of_pre_pay_euserp(payer_id:, bill_no:, amount_in_cents:, merchant_url:, merchant_para: nil,
+                                 protocol:, merchant_ret_url:, merchant_ret_para: nil,
                                  options: {})
     branch_id = options.delete(:branch_id) || CmbPay.branch_id
     co_no = options.delete(:co_no) || CmbPay.co_no
@@ -50,14 +50,13 @@ module CmbPay
       'CoNo'     => co_no,
       'BillNo'   => cmb_bill_no,
       'Amount'   => pay_amount,
-      'Date'     => trade_date,
       'ExpireTimeSpan' => expire_in_minutes,
       'MerchantUrl' => merchant_url,
       'MerchantPara' => merchant_para,
-      'MerchantCode' => m_code
+      'MerchantCode' => m_code,
+      'MerchantRetUrl' => merchant_ret_url,
+      'MerchantRetPara' => merchant_ret_para
     }
-    uri_params['MerchantRetUrl'] = merchant_ret_url unless merchant_ret_url.nil?
-    uri_params['MerchantRetPara'] = merchant_ret_para unless merchant_ret_para.nil?
     Service.request_uri('PrePayEUserP', uri_params)
   end
 
