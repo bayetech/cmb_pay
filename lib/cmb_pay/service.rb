@@ -3,11 +3,13 @@ module CmbPay
     GATEWAY_URL = {
       production: {
         NP_BindCard:  'https://mobile.cmbchina.com/mobilehtml/DebitCard/M_NetPay/OneNetRegister/NP_BindCard.aspx',
-        PrePayEUserP: 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?PrePayEUserP'
+        PrePayEUserP: 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?PrePayEUserP',
+        PrePayC2: 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?PrePayC2'
       },
       test: {
         NP_BindCard:  'http://61.144.248.29:801/mobilehtml/DebitCard/M_NetPay/OneNetRegister/NP_BindCard.aspx',
-        PrePayEUserP: 'http://61.144.248.29:801/netpayment/BaseHttp.dll?PrePayEUserP'
+        PrePayEUserP: 'http://61.144.248.29:801/netpayment/BaseHttp.dll?PrePayEUserP',
+        PrePayC2: 'http://61.144.248.29:801/netpayment/BaseHttp.dll?PrePayC2'
       }
     }.freeze
 

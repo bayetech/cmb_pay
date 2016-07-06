@@ -26,6 +26,20 @@ module CmbPay
   def self.uri_of_pre_pay_euserp(payer_id:, bill_no:, amount_in_cents:, merchant_url:, merchant_para: '',
                                  protocol:, merchant_ret_url:, merchant_ret_para: '',
                                  options: {})
+    generate_pay_link_of('PrePayEUserP',
+                         payer_id, bill_no, amount_in_cents, merchant_url, merchant_para,
+                         protocol, merchant_ret_url, merchant_ret_para,
+                         options)
+  end
+
+  def self.cmb_pay_message(query_string)
+    CmbPay::Message.new query_string
+  end
+
+  private_class_method
+
+  def self.generate_pay_link_of(pay_type, payer_id, bill_no, amount_in_cents, merchant_url, merchant_para,
+                                protocol, merchant_ret_url, merchant_ret_para, options)
     branch_id = options.delete(:branch_id) || CmbPay.branch_id
     co_no = options.delete(:co_no) || CmbPay.co_no
     co_key = options.delete(:co_key) || CmbPay.co_key
@@ -65,10 +79,6 @@ module CmbPay
       'MerchantRetUrl' => merchant_ret_url,
       'MerchantRetPara' => merchant_ret_para
     }
-    Service.request_uri('PrePayEUserP', uri_params)
-  end
-
-  def self.cmb_pay_message(query_string)
-    CmbPay::Message.new query_string
+    Service.request_uri(pay_type, uri_params)
   end
 end
