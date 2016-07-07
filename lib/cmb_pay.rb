@@ -32,11 +32,11 @@ module CmbPay
                          options)
   end
 
-  def self.uri_of_pre_pay_c2(payer_id:, bill_no:, amount_in_cents:, merchant_url:, merchant_para: '',
+  def self.uri_of_pre_pay_c2(bill_no:, amount_in_cents:, merchant_url:, merchant_para: '',
                              merchant_ret_url:, merchant_ret_para: '',
                              options: {})
     generate_pay_link_of('PrePayC2',
-                         payer_id, bill_no, amount_in_cents, merchant_url, merchant_para,
+                         nil, bill_no, amount_in_cents, merchant_url, merchant_para,
                          nil, merchant_ret_url, merchant_ret_para,
                          options)
   end
@@ -60,8 +60,9 @@ module CmbPay
     trade_date = options.delete(:trade_date) || Time.now.strftime('%Y%m%d')
     payee_id = options.delete(:payee_id) || CmbPay.default_payee_id
     random = options.delete(:random)
-    if protocol.nil?
+    if protocol.nil? && payer_id.nil?
       cmb_protocol_xml = nil
+      payee_id = nil
     else
       cmb_protocol_xml = {
         'PNo' => protocol['PNo'],
