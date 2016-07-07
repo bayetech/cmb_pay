@@ -27,8 +27,13 @@ Create `config/initializers/cmb_pay.rb` and put following configurations into it
 
 ```ruby
 # required
-CmbPay.branch_id = 'xxxx' # 支付商户开户分行号，4位
-CmbPay.co_no = '123456'   # 支付商户号/收单商户号，6位长数字，由银行在商户开户时确定
+CmbPay.branch_id = '0755'     # 支付商户开户分行号，4位
+CmbPay.co_no = '000354'       # 支付商户号/收单商户号，6位长数字，由银行在商户开户时确定
+CmbPay.environment = 'test' if Rails.env.development? || Rails.env.staging?
+CmbPay.co_key = ''            # 商户校验码，测试环境为空
+# only require by uri_of_pre_pay_euserp
+CmbPay.mch_no = 'P0019844'    # 协议商户企业编号，或者说是8位虚拟企业网银编号
+CmbPay.default_payee_id = '1' # 默认收款方的用户标识
 ```
 
 ## Development
