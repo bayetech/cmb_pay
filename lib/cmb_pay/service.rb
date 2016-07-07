@@ -32,10 +32,8 @@ module CmbPay
     def self.encode_merchant_para(para)
       if para.nil?
         ''
-      elsif para.is_a? Hash
-        para.to_a.collect { |c| "#{c[0]}=#{c[1]}" }.join '|'
       else
-        para
+        para.to_a.collect { |c| "#{c[0]}=#{c[1]}" }.join '|'
       end
     end
   end

@@ -23,8 +23,8 @@ module CmbPay
   @expire_in_minutes = 30
   @environment = :production
 
-  def self.uri_of_pre_pay_euserp(payer_id:, bill_no:, amount_in_cents:, merchant_url:, merchant_para: '',
-                                 protocol:, merchant_ret_url:, merchant_ret_para: '',
+  def self.uri_of_pre_pay_euserp(payer_id:, bill_no:, amount_in_cents:, merchant_url:, merchant_para: nil,
+                                 protocol:, merchant_ret_url:, merchant_ret_para: nil,
                                  options: {})
     generate_pay_link_of('PrePayEUserP',
                          payer_id, bill_no, amount_in_cents, merchant_url, merchant_para,
@@ -32,8 +32,8 @@ module CmbPay
                          options)
   end
 
-  def self.uri_of_pre_pay_c2(bill_no:, amount_in_cents:, merchant_url:, merchant_para: '',
-                             merchant_ret_url:, merchant_ret_para: '',
+  def self.uri_of_pre_pay_c2(bill_no:, amount_in_cents:, merchant_url:, merchant_para: nil,
+                             merchant_ret_url:, merchant_ret_para: nil,
                              options: {})
     generate_pay_link_of('PrePayC2',
                          nil, bill_no, amount_in_cents, merchant_url, merchant_para,

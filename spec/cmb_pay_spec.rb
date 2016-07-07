@@ -16,30 +16,26 @@ describe CmbPay do
       trade_date = Time.parse('July 6 2016').strftime('%Y%m%d')
       uri = subject.uri_of_pre_pay_euserp(payer_id: 1, bill_no: 654321, amount_in_cents: '12345',
                                           merchant_url: 'my_website_url',
-                                          merchant_para: 'my_website_para',
                                           merchant_ret_url: 'browser_return_url',
-                                          merchant_ret_para: 'browser_return_para',
                                           protocol: { 'PNo' => 1,
                                                       'Seq' => 12345,
                                                       'TS' => '20160704190627' },
                                           options: { random: '3.14', trade_date: trade_date })
       expect_result = 'http://61.144.248.29:801/netpayment/BaseHttp.dll?PrePayEUserP?BranchID=0755&CoNo=000257&BillNo=0000654321&Amount=123.45&Date=' \
-        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=my_website_para&MerchantCode=%7CVkLiT8ioPQBO8m1cyanuKW%2FybtMowMjHHrjH78JTVBPrI1Yzhlk%2FFC8ZW3XQrO6zkUcJcVE77ky6%2FUtc7YRsKJzo1SKCMv*CJj3gAUPXSdLp0HKW8jU32DGVpfVD27Birp4jpkD6foWPiu4HKNHr5lWr3KaLLfiDlI2FrnMXX5DDdoI%2FtmTsiIpP7aWSifFOIOqLk*kJxBlFlCwNc6OW*5wnPcsmNbn6OAbEv9Q4lGMvO3P7LRCNxSNDU2twi89mJoyVjVIjLWINuos9gh1N*f4%3D%7Ca96c8836290c02466d84ecadef4f34f1cf2c0922&MerchantRetUrl=browser_return_url&MerchantRetPara=browser_return_para'
+        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=&MerchantCode=%7CVkLiT8ioPQBO8m1cyanuKW%2FybtMowMjHHrjH78JTVBPrI1Yzhlk%2FFC8ZW3XQrO6zkUcJcVE77ky6%2FUtc7YRsKJzo1SKCMv*CJj3gAUPXSdLp0HKW8jU32DGVpfVD27Birp4jpkD6foWPiu4HKNHr5lWr3KaLLfiDlI2FrnMXX5DDdoI%2FtmTsiIpP7aWSifFOIOqLk*kJxBlFlCwNc6OW*5wnPZpwOq%2FtO0uR5OEVi3YyOSC4Q03QgE8aD15wkt5tYd0%3D%7C1d2b387aba971b0fa73bf3e39837a286e339b3f9&MerchantRetUrl=browser_return_url&MerchantRetPara'
       expect(uri.to_s).to eq expect_result
     end
   end
 
   describe '#uri_of_pre_pay_c2' do
-    specify 'will return PrePayEUserP URI' do
+    specify 'will return PrePayC2 URI' do
       trade_date = Time.parse('July 7 2016').strftime('%Y%m%d')
       uri = subject.uri_of_pre_pay_c2(bill_no: 000000, amount_in_cents: 1,
                                       merchant_url: 'my_website_url',
-                                      merchant_para: 'my_website_para',
                                       merchant_ret_url: 'browser_return_url',
-                                      merchant_ret_para: 'browser_return_para',
                                       options: { random: '3.14', trade_date: trade_date })
       expect_result = 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?TestPrePayC2?BranchID=0755&CoNo=000257&BillNo=0000000000&Amount=0.01&Date=' \
-        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=my_website_para&MerchantCode=%7CVkLiT8ilJWdg%2FVx%2F1azzKX7lOMk%3D%7Cbbdd83c1121985cd9df3472a8d532f50e0bbfcd6&MerchantRetUrl=browser_return_url&MerchantRetPara=browser_return_para'
+        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=&MerchantCode=%7CVkLiT8ilJWdg%2FVx%2F1azzKX7lOMk%3D%7Cac5c86147aba47fd5fd9a5974adfda66529d7dd8&MerchantRetUrl=browser_return_url&MerchantRetPara'
       expect(uri.to_s).to eq expect_result
     end
   end
