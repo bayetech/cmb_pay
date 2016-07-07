@@ -57,6 +57,7 @@ module CmbPay
     expire_in_minutes = options.delete(:expire_in_minutes) || CmbPay.expire_in_minutes
     pay_in_yuan, pay_in_cent = amount_in_cents.to_i.divmod(100)
     pay_amount = "#{pay_in_yuan}.#{format('%02d', pay_in_cent)}"
+    cmb_merchant_para = Service.encode_merchant_para(merchant_para)
     trade_date = options.delete(:trade_date) || Time.now.strftime('%Y%m%d')
     payee_id = options.delete(:payee_id) || CmbPay.default_payee_id
     random = options.delete(:random)
@@ -71,13 +72,13 @@ module CmbPay
         'Seq' => protocol['Seq'],
         'MUID' => payer_id,
         'URL' => merchant_url,
-        'Para' => merchant_para
+        'Para' => cmb_merchant_para
       }.to_xml(root: 'Protocol', skip_instruct: true, skip_types: true, indent: 0)
     end
     m_code = MerchantCode.generate(random: random, strkey: co_key, date: trade_date,
                                    branch_id: branch_id, co_no: co_no,
                                    bill_no: cmb_bill_no, amount: pay_amount,
-                                   merchant_para: merchant_para, merchant_url: merchant_url,
+                                   merchant_para: cmb_merchant_para, merchant_url: merchant_url,
                                    payer_id: payer_id, payee_id: payee_id,
                                    reserved: cmb_protocol_xml)
     uri_params = {
@@ -88,7 +89,7 @@ module CmbPay
       'Date'     => trade_date,
       'ExpireTimeSpan' => expire_in_minutes,
       'MerchantUrl' => merchant_url,
-      'MerchantPara' => merchant_para,
+      'MerchantPara' => cmb_merchant_para,
       'MerchantCode' => m_code,
       'MerchantRetUrl' => merchant_ret_url,
       'MerchantRetPara' => merchant_ret_para
