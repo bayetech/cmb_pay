@@ -33,11 +33,11 @@ module CmbPay
   end
 
   def self.uri_of_pre_pay_c2(payer_id:, bill_no:, amount_in_cents:, merchant_url:, merchant_para: '',
-                             protocol:, merchant_ret_url:, merchant_ret_para: '',
+                             merchant_ret_url:, merchant_ret_para: '',
                              options: {})
     generate_pay_link_of('PrePayC2',
                          payer_id, bill_no, amount_in_cents, merchant_url, merchant_para,
-                         protocol, merchant_ret_url, merchant_ret_para,
+                         nil, merchant_ret_url, merchant_ret_para,
                          options)
   end
 
@@ -60,21 +60,25 @@ module CmbPay
     trade_date = options.delete(:trade_date) || Time.now.strftime('%Y%m%d')
     payee_id = options.delete(:payee_id) || CmbPay.default_payee_id
     random = options.delete(:random)
-    cmb_protocol = {
-      'PNo' => protocol['PNo'],
-      'TS' => protocol['TS'] || Time.now.strftime('%Y%m%d%H%M%S'),
-      'MchNo' => CmbPay.mch_no,
-      'Seq' => protocol['Seq'],
-      'MUID' => payer_id,
-      'URL' => merchant_url,
-      'Para' => merchant_para
-    }
+    if protocol.nil?
+      cmb_protocol_xml = nil
+    else
+      cmb_protocol_xml = {
+        'PNo' => protocol['PNo'],
+        'TS' => protocol['TS'] || Time.now.strftime('%Y%m%d%H%M%S'),
+        'MchNo' => CmbPay.mch_no,
+        'Seq' => protocol['Seq'],
+        'MUID' => payer_id,
+        'URL' => merchant_url,
+        'Para' => merchant_para
+      }.to_xml(root: 'Protocol', skip_instruct: true, skip_types: true, indent: 0)
+    end
     m_code = MerchantCode.generate(random: random, strkey: co_key, date: trade_date,
                                    branch_id: branch_id, co_no: co_no,
                                    bill_no: cmb_bill_no, amount: pay_amount,
                                    merchant_para: merchant_para, merchant_url: merchant_url,
                                    payer_id: payer_id, payee_id: payee_id,
-                                   reserved: cmb_protocol.to_xml(root: 'Protocol', skip_instruct: true, skip_types: true, indent: 0))
+                                   reserved: cmb_protocol_xml)
     uri_params = {
       'BranchID' => branch_id,
       'CoNo'     => co_no,
