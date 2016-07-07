@@ -15,7 +15,8 @@ module CmbPay
       def self.plain_text(param_string)
         params = URI.decode_www_form(param_string).to_h
         params.delete('Signature')
-        URI.encode_www_form(params)
+        params['MerchantPara'] = params['MerchantPara'].tr('=', '|')
+        URI.encode_www_form(params).gsub('%7C', '=')
       end
 
       def self.signature(param_string)

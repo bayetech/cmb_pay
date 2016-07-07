@@ -62,5 +62,16 @@ describe CmbPay do
       expect(message.branch_id).to eq '0755'
       expect(message.co_no).to eq '000056'
     end
+
+    specify 'from a real CMB result should be valid too' do
+      query_params = 'Succeed=Y&CoNo=000056&BillNo=000000&Amount=0.01&Date=20160708&MerchantPara=bill_no=3025&Msg=07550000562016070800000000000000000000&Signature=91|8|221|250|17|39|84|234|249|242|86|252|57|81|240|57|232|233|131|152|182|180|253|171|92|49|28|24|237|95|239|118|53|137|96|130|196|128|191|79|131|137|114|43|241|7|204|15|48|138|189|64|255|21|162|157|208|3|70|247|205|118|72|138|'
+      message = subject.cmb_pay_message(query_params)
+      expect(message.succeed?).to be_truthy
+      expect(message.valid?).to be_truthy
+      expect(message.amount_cents).to eq 1
+      expect(message.branch_id).to eq '0755'
+      expect(message.co_no).to eq '000056'
+      expect(message.date).to eq '20160708'
+    end
   end
 end
