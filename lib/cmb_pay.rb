@@ -28,16 +28,16 @@ module CmbPay
                                  options: {})
     generate_pay_link_of('PrePayEUserP',
                          payer_id, bill_no, amount_in_cents, merchant_url, merchant_para,
-                         protocol, merchant_ret_url, merchant_ret_para,
+                         protocol, merchant_ret_url, merchant_ret_para, nil,
                          options)
   end
 
   def self.uri_of_pre_pay_c2(bill_no:, amount_in_cents:, merchant_url:, merchant_para: nil,
-                             merchant_ret_url:, merchant_ret_para: nil,
+                             merchant_ret_url:, merchant_ret_para: nil, card_bank_id: nil,
                              options: {})
     generate_pay_link_of('PrePayC2',
                          nil, bill_no, amount_in_cents, merchant_url, merchant_para,
-                         nil, merchant_ret_url, merchant_ret_para,
+                         nil, merchant_ret_url, merchant_ret_para, card_bank_id,
                          options)
   end
 
@@ -48,7 +48,7 @@ module CmbPay
   private_class_method
 
   def self.generate_pay_link_of(pay_type, payer_id, bill_no, amount_in_cents, merchant_url, merchant_para,
-                                protocol, merchant_ret_url, merchant_ret_para, options)
+                                protocol, merchant_ret_url, merchant_ret_para, card_bank_id, options)
     branch_id = options.delete(:branch_id) || CmbPay.branch_id
     co_no = options.delete(:co_no) || CmbPay.co_no
     co_key = options.delete(:co_key) || CmbPay.co_key
@@ -61,10 +61,7 @@ module CmbPay
     trade_date = options.delete(:trade_date) || Time.now.strftime('%Y%m%d')
     payee_id = options.delete(:payee_id) || CmbPay.default_payee_id
     random = options.delete(:random)
-    if protocol.nil? && payer_id.nil?
-      cmb_reserved_xml = nil
-      payee_id = nil
-    else
+    if protocol.is_a?(Hash) && !payer_id.nil?
       cmb_reserved_xml = {
         'PNo' => protocol['PNo'],
         'TS' => protocol['TS'] || Time.now.strftime('%Y%m%d%H%M%S'),
@@ -74,6 +71,9 @@ module CmbPay
         'URL' => merchant_url,
         'Para' => cmb_merchant_para
       }.to_xml(root: 'Protocol', skip_instruct: true, skip_types: true, indent: 0)
+    else
+      cmb_reserved_xml = nil
+      payee_id = nil
     end
     m_code = MerchantCode.generate(random: random, strkey: co_key, date: trade_date,
                                    branch_id: branch_id, co_no: co_no,
