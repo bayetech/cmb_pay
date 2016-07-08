@@ -62,10 +62,10 @@ module CmbPay
     payee_id = options.delete(:payee_id) || CmbPay.default_payee_id
     random = options.delete(:random)
     if protocol.nil? && payer_id.nil?
-      cmb_protocol_xml = nil
+      cmb_reserved_xml = nil
       payee_id = nil
     else
-      cmb_protocol_xml = {
+      cmb_reserved_xml = {
         'PNo' => protocol['PNo'],
         'TS' => protocol['TS'] || Time.now.strftime('%Y%m%d%H%M%S'),
         'MchNo' => CmbPay.mch_no,
@@ -80,7 +80,7 @@ module CmbPay
                                    bill_no: cmb_bill_no, amount: pay_amount,
                                    merchant_para: cmb_merchant_para, merchant_url: merchant_url,
                                    payer_id: payer_id, payee_id: payee_id,
-                                   reserved: cmb_protocol_xml)
+                                   reserved: cmb_reserved_xml)
     uri_params = {
       'BranchID' => branch_id,
       'CoNo'     => co_no,
