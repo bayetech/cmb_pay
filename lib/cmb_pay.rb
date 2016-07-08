@@ -71,6 +71,9 @@ module CmbPay
         'URL' => merchant_url,
         'Para' => cmb_merchant_para
       }.to_xml(root: 'Protocol', skip_instruct: true, skip_types: true, indent: 0)
+    elsif !card_bank_id.nil?
+      cmb_reserved_xml = "<CardBank>#{card_bank_id}</CardBank>"
+      payee_id = nil
     else
       cmb_reserved_xml = nil
       payee_id = nil
