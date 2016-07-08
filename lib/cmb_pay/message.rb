@@ -60,5 +60,9 @@ module CmbPay
     def payment_date
       Date.strptime(bank_date, '%Y%m%d')
     end
+
+    def merchant_params
+      URI.decode_www_form(merchant_para).to_h
+    end
   end
 end

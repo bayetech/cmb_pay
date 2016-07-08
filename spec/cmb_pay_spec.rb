@@ -72,6 +72,8 @@ describe CmbPay do
       expect(message.branch_id).to eq '0755'
       expect(message.co_no).to eq '000056'
       expect(message.date).to eq '20160708'
+      expect(message.merchant_para).to eq 'bill_no=3025'
+      expect(message.merchant_params['bill_no']).to eq '3025'
     end
   end
 end
