@@ -128,6 +128,7 @@ module CmbPay
 
   def self.generate_cmb_card_bank_xml(card_bank)
     return nil if SUPPORTED_BANK[card_bank].nil?
-    "<CardBank>#{card_bank}</CardBank>"
+    return "<CardBank>#{format('%04d', card_bank.to_i)}</CardBank>" if card_bank.to_s == card_bank.to_i.to_s
+    "<CardBank>#{format('%04d', SUPPORTED_BANK[card_bank])}</CardBank>"
   end
 end
