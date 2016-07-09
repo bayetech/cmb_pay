@@ -4,9 +4,11 @@ require 'openssl' # For RC4/RSA/SHA1
 
 module CmbPay
   module Sign
+    CMB_PUBLIC_KEY = File.read(File.expand_path('./public.key', __dir__)).freeze
+
     module Sha1WithRsa
       def self.verify(param_string)
-        pub = OpenSSL::PKey::RSA.new(CmbPay::Service::PUBLIC_KEY)
+        pub = OpenSSL::PKey::RSA.new(CMB_PUBLIC_KEY)
         pub.verify('sha1', signature(param_string), plain_text(param_string))
       end
 
