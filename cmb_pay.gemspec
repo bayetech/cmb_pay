@@ -9,12 +9,13 @@ Gem::Specification.new do |spec|
   spec.email         = ['eric.guocz@gmail.com']
 
   spec.summary       = 'An unofficial cmb (China Merchants Bank) pay gem.'
-  spec.description   = 'Helping rubyist integration with cmb (China Merchants Bank) payment service easier.'
+  spec.description   = 'Helping rubyist integration with cmb (China Merchants Bank) payment service (招商银行一网通支付) easier.'
   spec.homepage      = 'https://github.com/bayetech/cmb_pay'
   spec.license       = 'MIT'
   spec.required_ruby_version = '~> 2.1'
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(spec|features)/}) }
+  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(spec|features)/}) } \
+    - %w(CODE_OF_CONDUCT.md cmb-pay.sublime-project Gemfile Rakefile cmb_pay.gemspec)
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
