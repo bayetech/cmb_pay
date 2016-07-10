@@ -15,14 +15,11 @@ module CmbPay
       private_class_method
 
       def self.plain_text(param_string)
-        params = URI.decode_www_form(param_string).to_h
-        params.delete('Signature')
-        params['MerchantPara'] = params['MerchantPara'].tr('=', '|')
-        URI.encode_www_form(params).gsub('%7C', '=')
+        param_string[0, param_string.index('&Signature=')]
       end
 
       def self.signature(param_string)
-        sign = URI.decode_www_form(param_string).to_h.delete('Signature')
+        sign = param_string[param_string.index('&Signature=') + 11, param_string.length - 1]
         sign.split('|').map { |ascii_code| ascii_code.to_i.chr }.join('')
       end
     end

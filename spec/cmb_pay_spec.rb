@@ -52,16 +52,17 @@ describe CmbPay do
   end
 
   describe '#cmb_pay_message' do
-    specify 'will return a new CmbPay::Message' do
-      query_params = 'Succeed=Y&CoNo=xxxxxx&BillNo=xxxxxx&Amount=123.45&Date=20160621&MerchantPara=xxxx&Msg=bdzh1234562016062209876543211234567890&Signature=xxxxxxx'
+    specify 'real CMB result with 2 value of merchant_para' do
+      query_params = 'Succeed=Y&CoNo=000056&BillNo=000000&Amount=406.00&Date=20160710&MerchantPara=bill_no=fe5a64de823472dca4186a28759dd264|card_id=0104&Msg=07550000562016071000000000000000000000&Signature=163|81|102|123|242|141|88|91|206|112|113|27|202|119|101|133|231|160|194|14|60|221|40|81|233|0|150|225|72|150|248|74|248|184|183|118|130|213|18|232|100|123|173|74|60|248|142|143|184|14|236|43|248|235|95|38|93|182|253|113|236|212|159|255|'
       message = subject.cmb_pay_message(query_params)
-      expect(message.valid?).to be false
+      expect(message.valid?).to be_truthy
       expect(message.succeed?).to be_truthy
-      expect(message.co_no).to eq 'xxxxxx'
-      expect(message.amount_cents).to eq 12345
-      expect(message.order_date).to eq Date.new(2016, 6, 21)
-      expect(message.payment_date).to eq Date.new(2016, 6, 22)
-      expect(message.bank_serial_no).to eq '09876543211234567890'
+      expect(message.co_no).to eq '000056'
+      expect(message.amount_cents).to eq 40600
+      expect(message.order_date).to eq Date.new(2016, 7, 10)
+      expect(message.payment_date).to eq Date.new(2016, 7, 10)
+      expect(message.merchant_params['bill_no']).to eq 'fe5a64de823472dca4186a28759dd264'
+      expect(message.merchant_params['card_id']).to eq '0104'
     end
 
     specify 'from a real CMB result should be valid' do

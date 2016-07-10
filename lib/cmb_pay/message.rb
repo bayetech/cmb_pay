@@ -62,7 +62,7 @@ module CmbPay
     end
 
     def merchant_params
-      URI.decode_www_form(merchant_para).to_h
+      URI.decode_www_form(merchant_para.tr('|', '&')).to_h
     end
   end
 end
