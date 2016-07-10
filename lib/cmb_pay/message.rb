@@ -25,7 +25,7 @@ module CmbPay
       @succeed = params['Succeed']
       @co_no = params['CoNo']
       @bill_no = params['BillNo']
-      @amount = params['Amount'].to_f
+      @amount = params['Amount']
       @date = params['Date']
       @merchant_para = params['MerchantPara']
       @msg = params['Msg']
@@ -50,7 +50,7 @@ module CmbPay
     end
 
     def amount_cents
-      (amount * 100).to_i
+      (amount.to_f * 100).to_i
     end
 
     def order_date
