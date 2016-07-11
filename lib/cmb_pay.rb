@@ -70,6 +70,15 @@ module CmbPay
                          options)
   end
 
+  def self.uri_of_pre_pay_wap(bill_no:, amount_in_cents:, merchant_url:, merchant_para: nil,
+                              card_bank: nil,
+                              options: {})
+    generate_pay_link_of('PrePayWAP',
+                         nil, bill_no, amount_in_cents, merchant_url, merchant_para,
+                         nil, nil, nil, card_bank,
+                         options)
+  end
+
   def self.cmb_pay_message(query_string)
     CmbPay::Message.new query_string
   end

@@ -51,6 +51,18 @@ describe CmbPay do
     end
   end
 
+  describe '#uri_of_pre_pay_wap' do
+    specify 'will return PrePayWap China Merchants Bank URI' do
+      trade_date = Time.parse('July 11 2016').strftime('%Y%m%d')
+      uri = subject.uri_of_pre_pay_wap(bill_no: 000000, amount_in_cents: 1,
+                                       merchant_url: 'my_website_url',
+                                       options: { random: '3.14', trade_date: trade_date })
+      expect_result = 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?MfcISAPICommand=TestPrePayWAP?BranchID=0755&CoNo=000257&BillNo=0000000000&Amount=0.01&Date=' \
+        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=&MerchantCode=%7CVkLiT8ilJWdg%2FVx%2F1azzKX7lOMk%3D%7C25499edb45eec01bf715cd877523652c01578c6c&MerchantRetUrl&MerchantRetPara'
+      expect(uri.to_s).to eq expect_result
+    end
+  end
+
   describe '#cmb_pay_message' do
     specify 'real CMB result with 2 value of merchant_para' do
       query_params = 'Succeed=Y&CoNo=000056&BillNo=000000&Amount=406.00&Date=20160710&MerchantPara=bill_no=fe5a64de823472dca4186a28759dd264|card_id=0104&Msg=07550000562016071000000000000000000000&Signature=163|81|102|123|242|141|88|91|206|112|113|27|202|119|101|133|231|160|194|14|60|221|40|81|233|0|150|225|72|150|248|74|248|184|183|118|130|213|18|232|100|123|173|74|60|248|142|143|184|14|236|43|248|235|95|38|93|182|253|113|236|212|159|255|'
