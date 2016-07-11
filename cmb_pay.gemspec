@@ -20,6 +20,9 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
+  spec.cert_chain  = ['certs/Eric-Guo.pem']
+  spec.signing_key = File.expand_path('~/.ssh/gem-private_key.pem') if $PROGRAM_NAME.end_with?('gem')
+
   spec.add_runtime_dependency 'http', '>= 1.0.4', '< 3'
   spec.add_runtime_dependency 'activesupport', '>= 4.2.6', '< 5.1.x'
   spec.add_development_dependency 'bundler', '~> 1.12'
