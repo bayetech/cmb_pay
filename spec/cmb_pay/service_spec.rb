@@ -8,8 +8,13 @@ describe CmbPay::Service do
   end
 
   describe '#request_gateway_url' do
-    specify 'will get GATEWAY_URL' do
+    specify 'will get PrePayEUserP url' do
       expect(subject.request_gateway_url('PrePayEUserP')).to eq 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?PrePayEUserP'
+    end
+
+    specify 'will get PrePayWAP url' do
+      CmbPay.environment = :test
+      expect(subject.request_gateway_url('PrePayWAP')).to eq 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?MfcISAPICommand=TestPrePayWAP'
     end
   end
 
