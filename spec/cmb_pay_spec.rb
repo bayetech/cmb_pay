@@ -22,7 +22,7 @@ describe CmbPay do
                                                       'TS' => '20160704190627' },
                                           options: { random: '3.14', trade_date: trade_date })
       expect_result = 'http://61.144.248.29:801/netpayment/BaseHttp.dll?PrePayEUserP?BranchID=0755&CoNo=000257&BillNo=0000654321&Amount=123.45&Date=' \
-        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=&MerchantCode=%7CVkLiT8ioPQBO8m1cyanuKW%2FybtMowMjHHrjH78JTVBPrI1Yzhlk%2FFC8ZW3XQrO6zkUcJcVE77ky6%2FUtc7YRsKJzo1SKCMv*CJj3gAUPXSdLp0HKW8jU32DGVpfVD27Birp4jpkD6foWPiu4HKNHr5lWr3KaLLfiDlI2FrnMXX5DDdoI%2FtmTsiIpP7aWSifFOIOqLk*kJxBlFlCwNc6OW*5wnPZpwOq%2FtO0uR5OEVi3YyOSC4Q03QgE8aD15wkt5tYd0%3D%7C1d2b387aba971b0fa73bf3e39837a286e339b3f9&MerchantRetUrl=browser_return_url&MerchantRetPara'
+        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=&MerchantCode=%7CVkLiT8ioPQBO8m1cyanuKW%2FybtMowMjHHrjH78JTVBPrI1Yzhlk%2FFC8ZW3XQrO6zkUcJcVE77ky6%2FUtc7YRsKJzo1SKCMv*CJj3gAUPXSdLp0HKW8jU32DGVpfVD27Birp4jpkD6foWPiu4HKNHr5lWr3KaLLfiDlI2FrnMXX5DDdoI%2FtmTsiIpP7aWSifFOIOqLk*kJxBlFlCwNc6OW*5wnPZpwOq%2FtO0uR5OEVi3YyOSC4Q03QgE8aD15wkt5tYd0%3D%7C1d2b387aba971b0fa73bf3e39837a286e339b3f9&MerchantRetUrl=browser_return_url'
       expect(uri.to_s).to eq expect_result
     end
   end
@@ -35,7 +35,7 @@ describe CmbPay do
                                       merchant_ret_url: 'browser_return_url',
                                       options: { random: '3.14', trade_date: trade_date })
       expect_result = 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?TestPrePayC2?BranchID=0755&CoNo=000257&BillNo=0000000000&Amount=0.01&Date=' \
-        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=&MerchantCode=%7CVkLiT8ilJWdg%2FVx%2F1azzKX7lOMk%3D%7Cac5c86147aba47fd5fd9a5974adfda66529d7dd8&MerchantRetUrl=browser_return_url&MerchantRetPara'
+        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=&MerchantCode=%7CVkLiT8ilJWdg%2FVx%2F1azzKX7lOMk%3D%7Cac5c86147aba47fd5fd9a5974adfda66529d7dd8&MerchantRetUrl=browser_return_url'
       expect(uri.to_s).to eq expect_result
     end
 
@@ -46,7 +46,7 @@ describe CmbPay do
                                       merchant_ret_url: 'browser_return_url', card_bank: '上海银行',
                                       options: { random: '3.14', trade_date: trade_date })
       expect_result = 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?TestPrePayC2?BranchID=0755&CoNo=000257&BillNo=0000000000&Amount=0.01&Date=' \
-        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=&MerchantCode=%7CVkLiT8ilJWdg%2FVx%2F1azzKX7lOMkq1aaGP7jG%2FNVBFUnzXgsRkHQqFSdIB3jdz5zz7BdHOkMU7xm4lTdGjdEue96pgHKXNQ%3D%3D%7C4a50c9d582345d50f9e7b449846014a17f5e79d2&MerchantRetUrl=browser_return_url&MerchantRetPara'
+        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=&MerchantCode=%7CVkLiT8ilJWdg%2FVx%2F1azzKX7lOMkq1aaGP7jG%2FNVBFUnzXgsRkHQqFSdIB3jdz5zz7BdHOkMU7xm4lTdGjdEue96pgHKXNQ%3D%3D%7C4a50c9d582345d50f9e7b449846014a17f5e79d2&MerchantRetUrl=browser_return_url'
       expect(uri.to_s).to eq expect_result
     end
   end
@@ -58,7 +58,7 @@ describe CmbPay do
                                        merchant_url: 'my_website_url',
                                        options: { random: '3.14', trade_date: trade_date })
       expect_result = 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?MfcISAPICommand=TestPrePayWAP?BranchID=0755&CoNo=000257&BillNo=0000000000&Amount=0.01&Date=' \
-        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=&MerchantCode=%7CVkLiT8ilJWdg%2FVx%2F1azzKX7lOMk%3D%7C25499edb45eec01bf715cd877523652c01578c6c&MerchantRetUrl&MerchantRetPara'
+        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=&MerchantCode=%7CVkLiT8ilJWdg%2FVx%2F1azzKX7lOMk%3D%7C25499edb45eec01bf715cd877523652c01578c6c'
       expect(uri.to_s).to eq expect_result
     end
   end

@@ -128,10 +128,10 @@ module CmbPay
       'ExpireTimeSpan' => expire_in_minutes,
       'MerchantUrl' => merchant_url,
       'MerchantPara' => cmb_merchant_para,
-      'MerchantCode' => m_code,
-      'MerchantRetUrl' => merchant_ret_url,
-      'MerchantRetPara' => merchant_ret_para
+      'MerchantCode' => m_code
     }
+    uri_params['MerchantRetUrl'] = merchant_ret_url unless merchant_ret_url.nil?
+    uri_params['MerchantRetPara'] = merchant_ret_para unless merchant_ret_para.nil?
     Service.request_uri(pay_type, uri_params)
   end
 
