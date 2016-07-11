@@ -11,7 +11,7 @@ module CmbPay
         NP_BindCard:  'http://61.144.248.29:801/mobilehtml/DebitCard/M_NetPay/OneNetRegister/NP_BindCard.aspx',
         PrePayEUserP: 'http://61.144.248.29:801/netpayment/BaseHttp.dll?PrePayEUserP',
         PrePayC2: 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?TestPrePayC2',
-        PrePayWAP: 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?MfcISAPICommand=TestPrePayWAP'
+        PrePayWAP: 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?TestPrePayWAP'
       }
     }.freeze
 
@@ -24,7 +24,7 @@ module CmbPay
       uri.query = if CmbPay.environment.to_sym == :test && api_action.to_sym == :PrePayC2
                     "TestPrePayC2?#{URI.encode_www_form(params)}"
                   elsif CmbPay.environment.to_sym == :test && api_action.to_sym == :PrePayWAP
-                    "MfcISAPICommand=TestPrePayWAP?#{URI.encode_www_form(params)}"
+                    "TestPrePayWAP?#{URI.encode_www_form(params)}"
                   else
                     "#{uri.query}?#{URI.encode_www_form(params)}"
                   end
