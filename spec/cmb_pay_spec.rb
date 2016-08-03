@@ -82,7 +82,9 @@ describe CmbPay do
       message = subject.cmb_pay_message(query_params)
       expect(message.succeed?).to be_truthy
       expect(message.valid?).to be_truthy
+      expect(message.discount?).to be_falsey
       expect(message.amount_cents).to eq 1
+      expect(message.discount_amount_cents).to eq 0
       expect(message.branch_id).to eq '0755'
       expect(message.co_no).to eq '000056'
     end

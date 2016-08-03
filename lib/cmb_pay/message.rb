@@ -7,6 +7,9 @@ module CmbPay
     attr_accessor :date           # 订单下单日期(由支付命令送来)
     attr_accessor :merchant_para  # 商户自定义传递参数(由支付命令送来)
     attr_accessor :msg            # 银行通知用户支付结构消息
+    attr_accessor :discount_flag  # 当前订单是否有优惠，Y:有优惠 N：无优惠。
+    attr_accessor :discount_amt   # 优惠金额，格式：xxxx.xx，当有优惠的时候，
+                                  # 实际用户支付的是amount - discount_amt的金额到商户账号。
 
     attr_accessor :branch_id      # 分行号
     attr_accessor :bank_date      # 银行主机交易日期
@@ -29,6 +32,8 @@ module CmbPay
       @date = params['Date']
       @merchant_para = params['MerchantPara']
       @msg = params['Msg']
+      @discount_flag = params['DiscountFlag']
+      @discount_amt = params['DiscountAmt']
 
       # 银行通知用户的支付结果消息。信息的前38个字符格式为：4位分行号＋6位商户号＋8位银行接受交易的日期＋20位银行流水号；
       # 可以利用交易日期＋银行流水号＋订单号对该订单进行结帐处理
@@ -49,8 +54,16 @@ module CmbPay
       succeed == 'Y'
     end
 
+    def discount?
+      discount_flag == 'Y'
+    end
+
     def amount_cents
       (amount.to_f * 100).to_i
+    end
+
+    def discount_amount_cents
+      (discount_amt.to_f * 100).to_i
     end
 
     def order_date
