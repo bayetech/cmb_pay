@@ -11,6 +11,7 @@ module CmbPay
     end
 
     def self.cmb_timestamp(t: nil)
+      return t if t.is_a?(Integer)
       t = Time.now if t.nil?
       t.to_i * 1000 + (t.usec / 1000) - MILLISECONDS_SINCE_UNIX_EPOCH
     end

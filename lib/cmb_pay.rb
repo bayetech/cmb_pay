@@ -90,19 +90,11 @@ module CmbPay
     branch_id = CmbPay.branch_id if branch_id.nil?
     co_no = CmbPay.co_no if co_no.nil?
     co_key = CmbPay.co_key if co_key.nil?
-    head_xml = {
-      'BranchNo' => branch_id,
-      'MerchantNo' => co_no,
-      'TimeStamp' => Util.cmb_timestamp(t: time_stamp),
-      'Command' => 'QuerySingleOrder'
-    }.to_xml(root: 'Head', skip_instruct: true, skip_types: true, indent: 0)
-    body_xml = {
-      'Date' => trade_date,
-      'BillNo' => Util.cmb_bill_no(bill_no)
-    }.to_xml(root: 'Body', skip_instruct: true, skip_types: true, indent: 0)
-    hash_input = "#{co_key}#{head_xml}#{body_xml}"
+    head_inner_xml = "<BranchNo>#{branch_id}</BranchNo><MerchantNo>#{co_no}</MerchantNo><TimeStamp>#{Util.cmb_timestamp(t: time_stamp)}</TimeStamp><Command>QuerySingleOrder</Command>"
+    body_inner_xml = "<Date>#{trade_date}</Date><BillNo>#{Util.cmb_bill_no(bill_no)}</BillNo>"
+    hash_input = "#{co_key}#{head_inner_xml}#{body_inner_xml}"
     hash_xml = "<Hash>#{Sign.sha1_digest(hash_input)}</Hash>"
-    request_xml = "<Request>#{head_xml}#{body_xml}#{hash_xml}</Request>"
+    request_xml = "<Request><Head>#{head_inner_xml}</Head><Body>#{body_inner_xml}</Body>#{hash_xml}</Request>"
     HTTP.post(Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml })
   end
 
@@ -111,22 +103,11 @@ module CmbPay
     branch_id = CmbPay.branch_id if branch_id.nil?
     co_no = CmbPay.co_no if co_no.nil?
     co_key = CmbPay.co_key if co_key.nil?
-    head_xml = {
-      'BranchNo' => branch_id,
-      'MerchantNo' => co_no,
-      'TimeStamp' => Util.cmb_timestamp(t: time_stamp),
-      'Command' => 'QueryTransact'
-    }.to_xml(root: 'Head', skip_instruct: true, skip_types: true, indent: 0)
-    body_xml = {
-      'BeginDate' => begin_date,
-      'EndDate' => end_date,
-      'Count' => count,
-      'Operator' => operator,
-      'pos' => pos
-    }.to_xml(root: 'Body', skip_instruct: true, skip_types: true, indent: 0)
-    hash_input = "#{co_key}#{head_xml}#{body_xml}"
+    head_inner_xml = "<BranchNo>#{branch_id}</BranchNo><MerchantNo>#{co_no}</MerchantNo><TimeStamp>#{Util.cmb_timestamp(t: time_stamp)}</TimeStamp><Command>QueryTransact</Command>"
+    body_inner_xml = "<BeginDate>#{begin_date}</BeginDate><EndDate>#{end_date}</EndDate><Count>#{count}</Count><Operator>#{operator}</Operator><pos>#{pos.to_s}</pos>"
+    hash_input = "#{co_key}#{head_inner_xml}#{body_inner_xml}"
     hash_xml = "<Hash>#{Sign.sha1_digest(hash_input)}</Hash>"
-    request_xml = "<Request>#{head_xml}#{body_xml}#{hash_xml}</Request>"
+    request_xml = "<Request><Head>#{head_inner_xml}</Head><Body>#{body_inner_xml}</Body>#{hash_xml}</Request>"
     HTTP.post(Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml })
   end
 
