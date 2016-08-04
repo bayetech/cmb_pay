@@ -109,7 +109,7 @@ module CmbPay
     hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
   end
 
-  # 按商户日期查询已结账订单接口
+  # 按结账日期查询已结账订单接口
   def self.query_settled_order_by_settled_date(begin_date:, end_date:, count:, operator: nil, pos: nil,
                                                branch_id: nil, co_no: nil, co_key: nil, time_stamp: nil)
     head_inner_xml = build_direct_request_x_head('QuerySettledOrderBySettledDate', branch_id, co_no, time_stamp)
