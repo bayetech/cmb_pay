@@ -1,6 +1,7 @@
 require 'date'
 require 'uri'
 require 'active_support/core_ext/hash'
+require 'http' # https://github.com/httprb/http
 require 'cmb_pay/version'
 require 'cmb_pay/util'
 require 'cmb_pay/sign'
@@ -96,7 +97,7 @@ module CmbPay
     }.to_xml(root: 'Head', skip_instruct: true, skip_types: true, indent: 0)
     body_xml = {
       'Date' => trade_date,
-      'BillNo' => bill_no
+      'BillNo' => Util.cmb_bill_no(bill_no)
     }.to_xml(root: 'Body', skip_instruct: true, skip_types: true, indent: 0)
     hash_input = "#{co_key}#{head_xml}#{body_xml}"
     hash_xml = "<Hash>#{Sign.sha1_digest(hash_input)}</Hash>"
@@ -111,8 +112,7 @@ module CmbPay
     branch_id = options.delete(:branch_id) || CmbPay.branch_id
     co_no = options.delete(:co_no) || CmbPay.co_no
     co_key = options.delete(:co_key) || CmbPay.co_key
-    # 定单号，6位或10位长数字，由商户系统生成，一天内不能重复；
-    cmb_bill_no = format('%010d', bill_no.to_i % 10_000_000_000)
+    cmb_bill_no = Util.cmb_bill_no(bill_no)
     expire_in_minutes = options.delete(:expire_in_minutes) || CmbPay.expire_in_minutes
     pay_in_yuan, pay_in_cent = amount_in_cents.to_i.divmod(100)
     pay_amount = "#{pay_in_yuan}.#{format('%02d', pay_in_cent)}"
