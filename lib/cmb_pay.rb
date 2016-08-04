@@ -88,6 +88,20 @@ module CmbPay
     CmbPay::Message.new query_string
   end
 
+  # 退款接口
+  def self.refund_no_dup(bill_no:, refund_no:, refund_amount_in_cents:, memo:,
+                         bill_date: nil, operator: nil, operator_password: nil,
+                         branch_id: nil, co_no: nil, co_key: nil, time_stamp: nil)
+    refund_in_yuan, refund_in_cent = refund_amount_in_cents.to_i.divmod(100)
+    refund_amount = "#{refund_in_yuan}.#{format('%02d', refund_in_cent)}"
+    desc = memo.encode(xml: :text)
+    bill_date = Time.now.strftime('%Y%m%d') if bill_date.nil?
+    head_inner_xml = build_direct_request_x_head('Refund_No_Dup', branch_id, co_no, time_stamp,
+                                                 with_operator: true, operator: operator, operator_password: operator_password)
+    body_inner_xml = "<Date>#{bill_date}</Date><BillNo>#{Util.cmb_bill_no(bill_no)}</BillNo><RefundNo>#{Util.cmb_bill_no(refund_no)}</RefundNo><Amount>#{refund_amount}</Amount><Desc>#{desc}</Desc>"
+    hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
+  end
+
   # 单笔定单查询接口
   def self.query_single_order(bill_no:, trade_date: nil,
                               branch_id: nil, co_no: nil, co_key: nil, time_stamp: nil)
@@ -123,10 +137,17 @@ module CmbPay
 
   private_class_method
 
-  def self.build_direct_request_x_head(cmb_command, branch_id, co_no, time_stamp)
+  def self.build_direct_request_x_head(cmb_command, branch_id, co_no, time_stamp,
+                                       with_operator: false, operator: nil, operator_password: nil)
     branch_id = CmbPay.branch_id if branch_id.nil?
     co_no = CmbPay.co_no if co_no.nil?
-    "<BranchNo>#{branch_id}</BranchNo><MerchantNo>#{co_no}</MerchantNo><TimeStamp>#{Util.cmb_timestamp(t: time_stamp)}</TimeStamp><Command>#{cmb_command}</Command>"
+    if with_operator
+      operator = CmbPay.operator if operator.nil?
+      operator_password = CmbPay.operator_password if operator_password.nil?
+      "<BranchNo>#{branch_id}</BranchNo><MerchantNo>#{co_no}</MerchantNo><Operator>#{operator}</Operator><Password>#{operator_password}</Password><TimeStamp>#{Util.cmb_timestamp(t: time_stamp)}</TimeStamp><Command>#{cmb_command}</Command>"
+    else
+      "<BranchNo>#{branch_id}</BranchNo><MerchantNo>#{co_no}</MerchantNo><TimeStamp>#{Util.cmb_timestamp(t: time_stamp)}</TimeStamp><Command>#{cmb_command}</Command>"
+    end
   end
 
   def self.build_direct_request_x_query_body(begin_date, end_date, count, operator, pos)
