@@ -12,7 +12,7 @@ module CmbPay
   class << self
     attr_accessor :branch_id # 开户分行号
     attr_accessor :co_no     # 支付商户号/收单商户号
-    attr_accessor :co_key    # 商户校验码，测试环境为空
+    attr_accessor :co_key    # 商户校验码/商户密钥，测试环境为空
     attr_accessor :mch_no    # 协议商户企业编号，或者说是8位虚拟企业网银编号
     attr_accessor :expire_in_minutes # 会话有效时间
     attr_accessor :environment # 调用的招商银行支付环境，默认生产，测试填test
@@ -81,6 +81,27 @@ module CmbPay
 
   def self.cmb_pay_message(query_string)
     CmbPay::Message.new query_string
+  end
+
+  def self.single_trade_query(bill_no:, trade_date: nil, branch_id: nil, co_no: nil, co_key: nil)
+    trade_date = Time.now.strftime('%Y%m%d') if trade_date.nil?
+    branch_id = CmbPay.branch_id if branch_id.nil?
+    co_no = CmbPay.co_no if co_no.nil?
+    co_key = CmbPay.co_key if co_key.nil?
+    head_xml = {
+      'BranchNo' => branch_id,
+      'MerchantNo' => co_no,
+      'TimeStamp' => Util.cmb_timestamp,
+      'Command' => 'QuerySingleOrder'
+    }.to_xml(root: 'Head', skip_instruct: true, skip_types: true, indent: 0)
+    body_xml = {
+      'Date' => trade_date,
+      'BillNo' => bill_no
+    }.to_xml(root: 'Body', skip_instruct: true, skip_types: true, indent: 0)
+    hash_input = "#{co_key}#{head_xml}#{body_xml}"
+    hash_xml = "<Hash>#{Sign.sha1_digest(hash_input)}</Hash>"
+    request_xml = "<Request>#{head_xml}#{body_xml}#{hash_xml}</Request>"
+    HTTP.post(Service.request_gateway_url(:DirectRequestX), body: request_xml)
   end
 
   private_class_method

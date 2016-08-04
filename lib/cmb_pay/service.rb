@@ -5,13 +5,15 @@ module CmbPay
         NP_BindCard:  'https://mobile.cmbchina.com/mobilehtml/DebitCard/M_NetPay/OneNetRegister/NP_BindCard.aspx',
         PrePayEUserP: 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?PrePayEUserP',
         PrePayC2: 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?PrePayC2',
-        PrePayWAP: 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?PrePayWAP'
+        PrePayWAP: 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?PrePayWAP',
+        DirectRequestX: 'https://payment.ebank.cmbchina.com/netpayment/basehttp.dll?DirectRequestX'
       },
       test: {
         NP_BindCard:  'http://61.144.248.29:801/mobilehtml/DebitCard/M_NetPay/OneNetRegister/NP_BindCard.aspx',
         PrePayEUserP: 'http://61.144.248.29:801/netpayment/BaseHttp.dll?PrePayEUserP',
         PrePayC2: 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?TestPrePayC2',
-        PrePayWAP: 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?TestPrePayWAP'
+        PrePayWAP: 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?TestPrePayWAP',
+        DirectRequestX: 'http://218.17.27.197/netpayment/basehttp.dll?DirectRequestX'
       }
     }.freeze
 
