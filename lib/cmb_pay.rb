@@ -97,7 +97,7 @@ module CmbPay
   def self.query_transact(begin_date:, end_date:, count:, pos: nil, operator: '9999',
                           branch_id: nil, co_no: nil, co_key: nil, time_stamp: nil)
     head_inner_xml = build_direct_request_x_head('QueryTransact', branch_id, co_no, time_stamp)
-    body_inner_xml = "<BeginDate>#{begin_date}</BeginDate><EndDate>#{end_date}</EndDate><Count>#{count}</Count><Operator>#{operator}</Operator><pos>#{pos.to_s}</pos>"
+    body_inner_xml = build_direct_request_x_query_body(begin_date, end_date, count, operator, pos)
     hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
   end
 
@@ -105,7 +105,7 @@ module CmbPay
   def self.query_settled_order_by_merchant_date(begin_date:, end_date:, count:, pos: nil, operator: '9999',
                                                 branch_id: nil, co_no: nil, co_key: nil, time_stamp: nil)
     head_inner_xml = build_direct_request_x_head('QuerySettledOrderByMerchantDate', branch_id, co_no, time_stamp)
-    body_inner_xml = "<BeginDate>#{begin_date}</BeginDate><EndDate>#{end_date}</EndDate><Count>#{count}</Count><Operator>#{operator}</Operator><pos>#{pos.to_s}</pos>"
+    body_inner_xml = build_direct_request_x_query_body(begin_date, end_date, count, operator, pos)
     hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
   end
 
@@ -115,6 +115,10 @@ module CmbPay
     branch_id = CmbPay.branch_id if branch_id.nil?
     co_no = CmbPay.co_no if co_no.nil?
     "<BranchNo>#{branch_id}</BranchNo><MerchantNo>#{co_no}</MerchantNo><TimeStamp>#{Util.cmb_timestamp(t: time_stamp)}</TimeStamp><Command>#{cmb_command}</Command>"
+  end
+
+  def self.build_direct_request_x_query_body(begin_date, end_date, count, operator, pos)
+    "<BeginDate>#{begin_date}</BeginDate><EndDate>#{end_date}</EndDate><Count>#{count}</Count><Operator>#{operator}</Operator><pos>#{pos}</pos>"
   end
 
   def self.hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
