@@ -119,6 +119,8 @@ module CmbPay
 
   def self.build_direct_request_x_query_body(begin_date, end_date, count, operator, pos)
     operator = '9999' if operator.nil?
+    begin_date = begin_date.strftime('%Y%m%d') unless begin_date.is_a?(String)
+    end_date = end_date.strftime('%Y%m%d') unless end_date.is_a?(String)
     "<BeginDate>#{begin_date}</BeginDate><EndDate>#{end_date}</EndDate><Count>#{count}</Count><Operator>#{operator}</Operator><pos>#{pos}</pos>"
   end
 
