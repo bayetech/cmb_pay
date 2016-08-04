@@ -92,10 +92,7 @@ module CmbPay
     co_key = CmbPay.co_key if co_key.nil?
     head_inner_xml = "<BranchNo>#{branch_id}</BranchNo><MerchantNo>#{co_no}</MerchantNo><TimeStamp>#{Util.cmb_timestamp(t: time_stamp)}</TimeStamp><Command>QuerySingleOrder</Command>"
     body_inner_xml = "<Date>#{trade_date}</Date><BillNo>#{Util.cmb_bill_no(bill_no)}</BillNo>"
-    hash_input = "#{co_key}#{head_inner_xml}#{body_inner_xml}"
-    hash_xml = "<Hash>#{Sign.sha1_digest(hash_input)}</Hash>"
-    request_xml = "<Request><Head>#{head_inner_xml}</Head><Body>#{body_inner_xml}</Body>#{hash_xml}</Request>"
-    HTTP.post(Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml })
+    hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
   end
 
   def self.query_transact(begin_date:, end_date:, count:, pos: nil, operator: '9999',
@@ -105,13 +102,17 @@ module CmbPay
     co_key = CmbPay.co_key if co_key.nil?
     head_inner_xml = "<BranchNo>#{branch_id}</BranchNo><MerchantNo>#{co_no}</MerchantNo><TimeStamp>#{Util.cmb_timestamp(t: time_stamp)}</TimeStamp><Command>QueryTransact</Command>"
     body_inner_xml = "<BeginDate>#{begin_date}</BeginDate><EndDate>#{end_date}</EndDate><Count>#{count}</Count><Operator>#{operator}</Operator><pos>#{pos.to_s}</pos>"
+    hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
+  end
+
+  private_class_method
+
+  def self.hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
     hash_input = "#{co_key}#{head_inner_xml}#{body_inner_xml}"
     hash_xml = "<Hash>#{Sign.sha1_digest(hash_input)}</Hash>"
     request_xml = "<Request><Head>#{head_inner_xml}</Head><Body>#{body_inner_xml}</Body>#{hash_xml}</Request>"
     HTTP.post(Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml })
   end
-
-  private_class_method
 
   def self.generate_pay_link_of(pay_type, payer_id, bill_no, amount_in_cents, merchant_url, merchant_para,
                                 protocol, merchant_ret_url, merchant_ret_para, card_bank, options)
