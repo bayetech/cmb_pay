@@ -84,7 +84,8 @@ module CmbPay
     CmbPay::Message.new query_string
   end
 
-  def self.single_trade_query(bill_no:, trade_date: nil, branch_id: nil, co_no: nil, co_key: nil)
+  def self.query_single_order(bill_no:, trade_date: nil,
+                              branch_id: nil, co_no: nil, co_key: nil, time_stamp: nil)
     trade_date = Time.now.strftime('%Y%m%d') if trade_date.nil?
     branch_id = CmbPay.branch_id if branch_id.nil?
     co_no = CmbPay.co_no if co_no.nil?
@@ -92,12 +93,36 @@ module CmbPay
     head_xml = {
       'BranchNo' => branch_id,
       'MerchantNo' => co_no,
-      'TimeStamp' => Util.cmb_timestamp,
+      'TimeStamp' => Util.cmb_timestamp(t: time_stamp),
       'Command' => 'QuerySingleOrder'
     }.to_xml(root: 'Head', skip_instruct: true, skip_types: true, indent: 0)
     body_xml = {
       'Date' => trade_date,
       'BillNo' => Util.cmb_bill_no(bill_no)
+    }.to_xml(root: 'Body', skip_instruct: true, skip_types: true, indent: 0)
+    hash_input = "#{co_key}#{head_xml}#{body_xml}"
+    hash_xml = "<Hash>#{Sign.sha1_digest(hash_input)}</Hash>"
+    request_xml = "<Request>#{head_xml}#{body_xml}#{hash_xml}</Request>"
+    HTTP.post(Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml })
+  end
+
+  def self.query_transact(begin_date:, end_date:, count:, pos: nil, operator: '9999',
+                          branch_id: nil, co_no: nil, co_key: nil, time_stamp: nil)
+    branch_id = CmbPay.branch_id if branch_id.nil?
+    co_no = CmbPay.co_no if co_no.nil?
+    co_key = CmbPay.co_key if co_key.nil?
+    head_xml = {
+      'BranchNo' => branch_id,
+      'MerchantNo' => co_no,
+      'TimeStamp' => Util.cmb_timestamp(t: time_stamp),
+      'Command' => 'QueryTransact'
+    }.to_xml(root: 'Head', skip_instruct: true, skip_types: true, indent: 0)
+    body_xml = {
+      'BeginDate' => begin_date,
+      'EndDate' => end_date,
+      'Count' => count,
+      'Operator' => operator,
+      'pos' => pos
     }.to_xml(root: 'Body', skip_instruct: true, skip_types: true, indent: 0)
     hash_input = "#{co_key}#{head_xml}#{body_xml}"
     hash_xml = "<Hash>#{Sign.sha1_digest(hash_input)}</Hash>"
