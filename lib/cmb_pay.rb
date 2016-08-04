@@ -84,6 +84,7 @@ module CmbPay
     CmbPay::Message.new query_string
   end
 
+  # 单笔定单查询接口
   def self.query_single_order(bill_no:, trade_date: nil,
                               branch_id: nil, co_no: nil, co_key: nil, time_stamp: nil)
     trade_date = Time.now.strftime('%Y%m%d') if trade_date.nil?
@@ -92,9 +93,18 @@ module CmbPay
     hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
   end
 
+  # 商户入账查询接口
   def self.query_transact(begin_date:, end_date:, count:, pos: nil, operator: '9999',
                           branch_id: nil, co_no: nil, co_key: nil, time_stamp: nil)
     head_inner_xml = build_direct_request_x_head('QueryTransact', branch_id, co_no, time_stamp)
+    body_inner_xml = "<BeginDate>#{begin_date}</BeginDate><EndDate>#{end_date}</EndDate><Count>#{count}</Count><Operator>#{operator}</Operator><pos>#{pos.to_s}</pos>"
+    hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
+  end
+
+  # 按商户日期查询已结账订单接口
+  def self.query_settled_order_by_merchant_date(begin_date:, end_date:, count:, pos: nil, operator: '9999',
+                                                branch_id: nil, co_no: nil, co_key: nil, time_stamp: nil)
+    head_inner_xml = build_direct_request_x_head('QuerySettledOrderByMerchantDate', branch_id, co_no, time_stamp)
     body_inner_xml = "<BeginDate>#{begin_date}</BeginDate><EndDate>#{end_date}</EndDate><Count>#{count}</Count><Operator>#{operator}</Operator><pos>#{pos.to_s}</pos>"
     hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
   end
