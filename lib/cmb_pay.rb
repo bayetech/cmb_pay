@@ -11,16 +11,20 @@ require 'cmb_pay/service'
 
 module CmbPay
   class << self
-    attr_accessor :branch_id # 开户分行号
-    attr_accessor :co_no     # 支付商户号/收单商户号
-    attr_accessor :co_key    # 商户校验码/商户密钥，测试环境为空
-    attr_accessor :mch_no    # 协议商户企业编号，或者说是8位虚拟企业网银编号
-    attr_accessor :expire_in_minutes # 会话有效时间
-    attr_accessor :environment # 调用的招商银行支付环境，默认生产，测试填test
-    attr_accessor :default_payee_id # 默认收款方的用户标识
+    attr_accessor :branch_id          # 开户分行号
+    attr_accessor :co_no              # 支付商户号/收单商户号
+    attr_accessor :co_key             # 商户校验码/商户密钥，测试环境为空
+    attr_accessor :mch_no             # 协议商户企业编号，或者说是8位虚拟企业网银编号
+    attr_accessor :operator           # 操作员号，一般是9999
+    attr_accessor :operator_password  # 操作员的密码
+    attr_accessor :expire_in_minutes  # 会话有效时间
+    attr_accessor :environment        # 调用的招商银行支付环境，默认生产，测试填test
+    attr_accessor :default_payee_id   # 默认收款方的用户标识
   end
   @co_key = ''
   @mch_no = ''
+  @operator = '9999'
+  @operator_password = ''
   @expire_in_minutes = 30
   @environment = :production
 
