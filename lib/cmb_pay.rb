@@ -102,7 +102,7 @@ module CmbPay
     hash_input = "#{co_key}#{head_xml}#{body_xml}"
     hash_xml = "<Hash>#{Sign.sha1_digest(hash_input)}</Hash>"
     request_xml = "<Request>#{head_xml}#{body_xml}#{hash_xml}</Request>"
-    HTTP.post(Service.request_gateway_url(:DirectRequestX), body: request_xml)
+    HTTP.post(Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml })
   end
 
   private_class_method
