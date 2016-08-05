@@ -130,6 +130,15 @@ describe CmbPay do
       expect(request_result).to eq expect_result_xml
     end
 
+    specify 'will post query_transact as direct request X with pos' do
+      request_xml = '<Request><Head><BranchNo>0755</BranchNo><MerchantNo>000257</MerchantNo><TimeStamp>523730558849</TimeStamp><Command>QueryTransact</Command></Head><Body><BeginDate>20150919</BeginDate><EndDate>20150923</EndDate><Count>2</Count><Operator>9999</Operator><pos>2015091910475716272267400000000010</pos></Body><Hash>aff9f9c46455c2165c64b8380df079a398ca26c9</Hash></Request>'
+      expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><QryLopFlg>Y</QryLopFlg><QryLopBlk>2015091910524216272262700000000010</QryLopBlk><BllRecord><BillNo>0000003309</BillNo><MchDate>20160722</MchDate><StlDate>20150919</StlDate><BillState>0</BillState><BillAmount>6.88</BillAmount><FeeAmount>0.04</FeeAmount><CardType>07</CardType><BillRfn>16272225300000000010</BillRfn><BillType></BillType><StlAmount>6.88</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord><BllRecord><BillNo>0000003310</BillNo><MchDate>20160722</MchDate><StlDate>20150919</StlDate><BillState>0</BillState><BillAmount>6.88</BillAmount><FeeAmount>0.04</FeeAmount><CardType>07</CardType><BillRfn>16272262700000000010</BillRfn><BillType></BillType><StlAmount>6.88</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord></Body></Response>'
+      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(expect_result_xml)
+      request_result = subject.query_transact(begin_date: '20150919', end_date: '20150923', count: 2, pos: '2015091910475716272267400000000010',
+                                              time_stamp: 523730558849)
+      expect(request_result).to eq expect_result_xml
+    end
+
     specify 'will post query_transact as direct request X as different account' do
       request_xml = '<Request><Head><BranchNo>0731</BranchNo><MerchantNo>000005</MerchantNo><TimeStamp>523042695395</TimeStamp><Command>QueryTransact</Command></Head><Body><BeginDate>20160726</BeginDate><EndDate>20160727</EndDate><Count>10</Count><Operator>9999</Operator><pos></pos></Body><Hash>5921609f50ff447c5f610fdf4607cb5416fe97ed</Hash></Request>'
       expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><QryLopFlg>N</QryLopFlg><QryLopBlk>00000000000000                    </QryLopBlk></Body></Response>'
