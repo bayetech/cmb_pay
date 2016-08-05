@@ -111,6 +111,7 @@ describe CmbPay do
       request_result = subject.query_single_order(bill_no: 5456, trade_date: '20160805', time_stamp: 523726352486)
       expect(request_result).to eq expect_result_xml
     end
+    # bill_no 5457 exceed 100, so bill amount 159.99, and actual amount 149.99
     specify 'will post query_single_order 5457' do
       request_xml = '<Request><Head><BranchNo>0755</BranchNo><MerchantNo>000257</MerchantNo><TimeStamp>523726834219</TimeStamp><Command>QuerySingleOrder</Command></Head><Body><Date>20160805</Date><BillNo>0000005457</BillNo></Body><Hash>4d951e34be8c10e9b2a29ee31cbd3a362cb46f81</Hash></Request>'
       expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><BillNo>0000005457</BillNo><Amount>149.99</Amount><AcceptDate>20160805</AcceptDate><AcceptTime>145441</AcceptTime><BillAmount>159.99</BillAmount><Status>0</Status><CardType>03</CardType><Fee>0.90</Fee><MerchantPara>bill_no%3de943df978e8213715d21b5a12669e0d5</MerchantPara><CardNo>622575******6460</CardNo><BankSeqNo>16280567000000000030</BankSeqNo></Body></Response>'
