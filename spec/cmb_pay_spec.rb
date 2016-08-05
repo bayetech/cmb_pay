@@ -139,4 +139,15 @@ describe CmbPay do
       expect(request_result).to eq expect_result_xml
     end
   end
+
+  describe '#query_settled_order_by_merchant_date' do
+    specify 'will post query_settled_order_by_merchant_date as direct request X' do
+      request_xml = '<Request><Head><BranchNo>0755</BranchNo><MerchantNo>000257</MerchantNo><TimeStamp>523729104635</TimeStamp><Command>QuerySettledOrderByMerchantDate</Command></Head><Body><BeginDate>20150919</BeginDate><EndDate>20150923</EndDate><Count>2</Count><Operator>9999</Operator><pos></pos></Body><Hash>c319d9bbdf0d91bc98e2bee6535cf47f5e605f0e</Hash></Request>'
+      expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><QryLopFlg>N</QryLopFlg><QryLopBlk>H     00000000000000                    </QryLopBlk></Body></Response>'
+      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(expect_result_xml)
+      request_result = subject.query_settled_order_by_merchant_date(begin_date: '20150919', end_date: '20150923', count: 2,
+                                                                    time_stamp: 523729104635)
+      expect(request_result).to eq expect_result_xml
+    end
+  end
 end
