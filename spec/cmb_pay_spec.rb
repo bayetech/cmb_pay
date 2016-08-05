@@ -122,6 +122,15 @@ describe CmbPay do
 
   describe '#query_transact' do
     specify 'will post query_transact as direct request X' do
+      request_xml = '<Request><Head><BranchNo>0755</BranchNo><MerchantNo>000257</MerchantNo><TimeStamp>523727813775</TimeStamp><Command>QueryTransact</Command></Head><Body><BeginDate>20150919</BeginDate><EndDate>20150923</EndDate><Count>2</Count><Operator>9999</Operator><pos></pos></Body><Hash>7d60537819b0e6db1223b422416eb7ed9d5d725f</Hash></Request>'
+      expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><QryLopFlg>Y</QryLopFlg><QryLopBlk>2015091910475716272267400000000010</QryLopBlk><BllRecord><BillNo>0000003305</BillNo><MchDate>20160722</MchDate><StlDate>20150919</StlDate><BillState>0</BillState><BillAmount>0.98</BillAmount><FeeAmount>0.01</FeeAmount><CardType>07</CardType><BillRfn>16272205800000000010</BillRfn><BillType></BillType><StlAmount>0.98</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord><BllRecord><BillNo>0000003306</BillNo><MchDate>20160722</MchDate><StlDate>20150919</StlDate><BillState>0</BillState><BillAmount>4.18</BillAmount><FeeAmount>0.03</FeeAmount><CardType>07</CardType><BillRfn>16272267400000000010</BillRfn><BillType></BillType><StlAmount>4.18</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord></Body></Response>'
+      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(expect_result_xml)
+      request_result = subject.query_transact(begin_date: '20150919', end_date: '20150923', count: 2,
+                                              time_stamp: 523727813775)
+      expect(request_result).to eq expect_result_xml
+    end
+
+    specify 'will post query_transact as direct request X as different account' do
       request_xml = '<Request><Head><BranchNo>0731</BranchNo><MerchantNo>000005</MerchantNo><TimeStamp>523042695395</TimeStamp><Command>QueryTransact</Command></Head><Body><BeginDate>20160726</BeginDate><EndDate>20160727</EndDate><Count>10</Count><Operator>9999</Operator><pos></pos></Body><Hash>5921609f50ff447c5f610fdf4607cb5416fe97ed</Hash></Request>'
       expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><QryLopFlg>N</QryLopFlg><QryLopBlk>00000000000000                    </QryLopBlk></Body></Response>'
       expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(expect_result_xml)
