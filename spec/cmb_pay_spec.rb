@@ -103,6 +103,17 @@ describe CmbPay do
     end
   end
 
+  describe '#refund_no_dup' do
+    specify 'will post refund_no_dup 5457, but not success' do
+      request_xml = '<Request><Head><BranchNo>0755</BranchNo><MerchantNo>000257</MerchantNo><Operator>9999</Operator><Password>000257</Password><TimeStamp>523735825625</TimeStamp><Command>Refund_No_Dup</Command></Head><Body><Date>20160805</Date><BillNo>0000005457</BillNo><RefundNo>0000000097</RefundNo><Amount>149.99</Amount><Desc>test</Desc></Body><Hash>7072816a910c151ae8737e55ae0b532d0a1cb3a7</Hash></Request>'
+      expect_result_xml = '<Response><Head><Code>NP2009</Code><ErrMsg>NP2009.无效请求：当前商户不允许进行直连退款</ErrMsg></Head><Body></Body></Response>'
+      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(expect_result_xml)
+      request_result = subject.refund_no_dup(bill_no: 5457, refund_no: 97, refund_amount_in_cents: 14999, memo: 'test',
+                                             bill_date: '20160805', operator_password: '000257', time_stamp: 523735825625)
+      expect(request_result).to eq expect_result_xml
+    end
+  end
+
   describe '#query_single_order' do
     specify 'will post query_single_order 5456' do
       request_xml = '<Request><Head><BranchNo>0755</BranchNo><MerchantNo>000257</MerchantNo><TimeStamp>523726352486</TimeStamp><Command>QuerySingleOrder</Command></Head><Body><Date>20160805</Date><BillNo>0000005456</BillNo></Body><Hash>348b863965127717e2822fd544bb6738773742a2</Hash></Request>'
