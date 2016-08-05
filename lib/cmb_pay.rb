@@ -112,6 +112,8 @@ module CmbPay
   end
 
   # 商户入账查询接口
+  # pos: 当<QryLopFlg>Y</QryLopFlg>续传标记为Y时（表示仍有后续的通讯包，采用多次通讯方式续传时使用)
+  #      填写<QryLopBlk>续传包请求数据</QryLopBlk>中的数据
   def self.query_transact(begin_date:, end_date:, count:, operator: nil, pos: nil,
                           branch_id: nil, co_no: nil, co_key: nil, time_stamp: nil)
     head_inner_xml = build_direct_request_x_head('QueryTransact', branch_id, co_no, time_stamp)
