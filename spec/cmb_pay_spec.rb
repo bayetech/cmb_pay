@@ -168,4 +168,24 @@ describe CmbPay do
       expect(request_result).to eq expect_result_xml
     end
   end
+
+  describe '#query_settled_order_by_settled_date' do
+    specify 'will post query_settled_order_by_settled_date as direct request X' do
+      request_xml = '<Request><Head><BranchNo>0755</BranchNo><MerchantNo>000257</MerchantNo><TimeStamp>523732011805</TimeStamp><Command>QuerySettledOrderBySettledDate</Command></Head><Body><BeginDate>20160805</BeginDate><EndDate>20160805</EndDate><Count>1</Count><Operator>9999</Operator><pos></pos></Body><Hash>779a26d9beea763db5f4a7c783a329cc1f087caa</Hash></Request>'
+      expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><QryLopFlg>Y</QryLopFlg><QryLopBlk>HH00012016080515533016280573200000000010</QryLopBlk><BllRecord><BillNo>0000005477</BillNo><MchDate>20160805</MchDate><StlDate>20160805</StlDate><BillState>6</BillState><BillAmount>0.03</BillAmount><FeeAmount>0.00</FeeAmount><CardType>03</CardType><BillRfn>16280573200000000010</BillRfn><BillType></BillType><StlAmount>0.03</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord></Body></Response>'
+      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(expect_result_xml)
+      request_result = subject.query_settled_order_by_settled_date(begin_date: '20160805', end_date: '20160805', count: 1,
+                                                                   time_stamp: 523732011805)
+      expect(request_result).to eq expect_result_xml
+    end
+
+    specify 'will post query_settled_order_by_settled_date with pos' do
+      request_xml = '<Request><Head><BranchNo>0755</BranchNo><MerchantNo>000257</MerchantNo><TimeStamp>523732240132</TimeStamp><Command>QuerySettledOrderBySettledDate</Command></Head><Body><BeginDate>20160805</BeginDate><EndDate>20160805</EndDate><Count>2</Count><Operator>9999</Operator><pos>HH00012016080515533016280573200000000010</pos></Body><Hash>845e207806d9d8b76e9767d7b3b70e3998368e56</Hash></Request>'
+      expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><QryLopFlg>Y</QryLopFlg><QryLopBlk>HH00012016080515415316280525100000000010</QryLopBlk><BllRecord><BillNo>0000005474</BillNo><MchDate>20160805</MchDate><StlDate>20160805</StlDate><BillState>6</BillState><BillAmount>0.03</BillAmount><FeeAmount>0.00</FeeAmount><CardType>03</CardType><BillRfn>16280566200000000020</BillRfn><BillType></BillType><StlAmount>0.03</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord><BllRecord><BillNo>0000005472</BillNo><MchDate>20160805</MchDate><StlDate>20160805</StlDate><BillState>6</BillState><BillAmount>0.03</BillAmount><FeeAmount>0.00</FeeAmount><CardType>03</CardType><BillRfn>16280525100000000010</BillRfn><BillType></BillType><StlAmount>0.03</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord></Body></Response>'
+      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(expect_result_xml)
+      request_result = subject.query_settled_order_by_settled_date(begin_date: '20160805', end_date: '20160805', count: 2, pos: 'HH00012016080515533016280573200000000010',
+                                                                   time_stamp: 523732240132)
+      expect(request_result).to eq expect_result_xml
+    end
+  end
 end
