@@ -103,6 +103,16 @@ describe CmbPay do
     end
   end
 
+  describe '#query_single_order' do
+    specify 'will post query_single_order as direct request X' do
+      request_xml = '<Request><Head><BranchNo>0755</BranchNo><MerchantNo>000257</MerchantNo><TimeStamp>523726352486</TimeStamp><Command>QuerySingleOrder</Command></Head><Body><Date>20160805</Date><BillNo>0000005456</BillNo></Body><Hash>348b863965127717e2822fd544bb6738773742a2</Hash></Request>'
+      expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><BillNo>0000005456</BillNo><Amount>6.88</Amount><AcceptDate>20160805</AcceptDate><AcceptTime>145354</AcceptTime><BillAmount>6.88</BillAmount><Status>0</Status><CardType>03</CardType><Fee>0.04</Fee><MerchantPara>bill_no%3d598331a5097eb572d7bd4ac96a1a6492</MerchantPara><CardNo>622575******6460</CardNo><BankSeqNo>16280531200000000020</BankSeqNo></Body></Response>'
+      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(expect_result_xml)
+      request_result = subject.query_single_order(bill_no: 5456, trade_date: '20160805', time_stamp: 523726352486)
+      expect(request_result).to eq expect_result_xml
+    end
+  end
+
   describe '#query_transact' do
     specify 'will post query_transact as direct request X' do
       request_xml = '<Request><Head><BranchNo>0731</BranchNo><MerchantNo>000005</MerchantNo><TimeStamp>523042695395</TimeStamp><Command>QueryTransact</Command></Head><Body><BeginDate>20160726</BeginDate><EndDate>20160727</EndDate><Count>10</Count><Operator>9999</Operator><pos></pos></Body><Hash>5921609f50ff447c5f610fdf4607cb5416fe97ed</Hash></Request>'
