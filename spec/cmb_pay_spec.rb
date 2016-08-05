@@ -158,5 +158,14 @@ describe CmbPay do
                                                                     time_stamp: 523731435008)
       expect(request_result).to eq expect_result_xml
     end
+
+    specify 'will post query_settled_order_by_merchant_date with pos' do
+      request_xml = '<Request><Head><BranchNo>0755</BranchNo><MerchantNo>000257</MerchantNo><TimeStamp>523731718930</TimeStamp><Command>QuerySettledOrderByMerchantDate</Command></Head><Body><BeginDate>20160805</BeginDate><EndDate>20160805</EndDate><Count>3</Count><Operator>9999</Operator><pos>HH00012016080515443416280566200000000020</pos></Body><Hash>956b8f831c0490fdc7d35038a9b2ebc3ce450cda</Hash></Request>'
+      expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><QryLopFlg>Y</QryLopFlg><QryLopBlk>HH00012016080515301916280567000000000040</QryLopBlk><BllRecord><BillNo>0000005472</BillNo><MchDate>20160805</MchDate><StlDate>20160805</StlDate><BillState>0</BillState><BillAmount>0.03</BillAmount><FeeAmount>0.00</FeeAmount><CardType>03</CardType><BillRfn>16280525100000000010</BillRfn><BillType></BillType><StlAmount>0.03</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord><BllRecord><BillNo>0000005471</BillNo><MchDate>20160805</MchDate><StlDate>20160805</StlDate><BillState>0</BillState><BillAmount>0.03</BillAmount><FeeAmount>0.00</FeeAmount><CardType>03</CardType><BillRfn>16280566100000000020</BillRfn><BillType></BillType><StlAmount>0.03</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord><BllRecord><BillNo>0000005469</BillNo><MchDate>20160805</MchDate><StlDate>20160805</StlDate><BillState>0</BillState><BillAmount>0.03</BillAmount><FeeAmount>0.00</FeeAmount><CardType>03</CardType><BillRfn>16280567000000000040</BillRfn><BillType></BillType><StlAmount>0.03</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord></Body></Response>'
+      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(expect_result_xml)
+      request_result = subject.query_settled_order_by_merchant_date(begin_date: '20160805', end_date: '20160805', count: 3, pos: 'HH00012016080515443416280566200000000020',
+                                                                    time_stamp: 523731718930)
+      expect(request_result).to eq expect_result_xml
+    end
   end
 end
