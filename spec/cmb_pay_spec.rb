@@ -102,4 +102,15 @@ describe CmbPay do
       expect(message.merchant_params['bill_no']).to eq '3025'
     end
   end
+
+  describe '#query_transact' do
+    specify 'will post query_transact as direct request X' do
+      request_xml = '<Request><Head><BranchNo>0731</BranchNo><MerchantNo>000005</MerchantNo><TimeStamp>523042695395</TimeStamp><Command>QueryTransact</Command></Head><Body><BeginDate>20160726</BeginDate><EndDate>20160727</EndDate><Count>10</Count><Operator>9999</Operator><pos></pos></Body><Hash>5921609f50ff447c5f610fdf4607cb5416fe97ed</Hash></Request>'
+      expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><QryLopFlg>N</QryLopFlg><QryLopBlk>00000000000000                    </QryLopBlk></Body></Response>'
+      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(expect_result_xml)
+      request_result = subject.query_transact(begin_date: '20160726', end_date: '20160727', count: 10,
+                                              branch_id: '0731', co_no: '000005', time_stamp: 523042695395)
+      expect(request_result).to eq expect_result_xml
+    end
+  end
 end
