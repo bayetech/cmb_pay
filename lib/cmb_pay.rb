@@ -6,6 +6,7 @@ require 'cmb_pay/util'
 require 'cmb_pay/sign'
 require 'cmb_pay/merchant_code'
 require 'cmb_pay/message/pay'
+require 'cmb_pay/message/single_order'
 require 'cmb_pay/service'
 
 module CmbPay
@@ -107,7 +108,8 @@ module CmbPay
     trade_date = Time.now.strftime('%Y%m%d') if trade_date.nil?
     head_inner_xml = build_direct_request_x_head('QuerySingleOrder', branch_id, co_no, time_stamp)
     body_inner_xml = "<Date>#{trade_date}</Date><BillNo>#{Util.cmb_bill_no(bill_no)}</BillNo>"
-    hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
+    http_response = hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
+    Message::SingleOrder.new(http_response)
   end
 
   # 商户入账查询接口

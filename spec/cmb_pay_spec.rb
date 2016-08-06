@@ -118,17 +118,38 @@ describe CmbPay do
     specify 'will post query_single_order 5456' do
       request_xml = '<Request><Head><BranchNo>0755</BranchNo><MerchantNo>000257</MerchantNo><TimeStamp>523726352486</TimeStamp><Command>QuerySingleOrder</Command></Head><Body><Date>20160805</Date><BillNo>0000005456</BillNo></Body><Hash>348b863965127717e2822fd544bb6738773742a2</Hash></Request>'
       expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><BillNo>0000005456</BillNo><Amount>6.88</Amount><AcceptDate>20160805</AcceptDate><AcceptTime>145354</AcceptTime><BillAmount>6.88</BillAmount><Status>0</Status><CardType>03</CardType><Fee>0.04</Fee><MerchantPara>bill_no%3d598331a5097eb572d7bd4ac96a1a6492</MerchantPara><CardNo>622575******6460</CardNo><BankSeqNo>16280531200000000020</BankSeqNo></Body></Response>'
-      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(expect_result_xml)
-      request_result = subject.query_single_order(bill_no: 5456, trade_date: '20160805', time_stamp: 523726352486)
-      expect(request_result).to eq expect_result_xml
+      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(HTTP::Response.new(status: 200, body: expect_result_xml, version: '1.0'))
+      msg = subject.query_single_order(bill_no: 5456, trade_date: '20160805', time_stamp: 523726352486)
+      expect(msg.raw_http_response.body.to_s).to eq expect_result_xml
+      expect(msg.succeed?).to be_truthy
     end
     # bill_no 5457 exceed 100, so bill amount 159.99, and actual amount 149.99
     specify 'will post query_single_order 5457' do
       request_xml = '<Request><Head><BranchNo>0755</BranchNo><MerchantNo>000257</MerchantNo><TimeStamp>523726834219</TimeStamp><Command>QuerySingleOrder</Command></Head><Body><Date>20160805</Date><BillNo>0000005457</BillNo></Body><Hash>4d951e34be8c10e9b2a29ee31cbd3a362cb46f81</Hash></Request>'
       expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><BillNo>0000005457</BillNo><Amount>149.99</Amount><AcceptDate>20160805</AcceptDate><AcceptTime>145441</AcceptTime><BillAmount>159.99</BillAmount><Status>0</Status><CardType>03</CardType><Fee>0.90</Fee><MerchantPara>bill_no%3de943df978e8213715d21b5a12669e0d5</MerchantPara><CardNo>622575******6460</CardNo><BankSeqNo>16280567000000000030</BankSeqNo></Body></Response>'
-      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(expect_result_xml)
-      request_result = subject.query_single_order(bill_no: 5457, trade_date: '20160805', time_stamp: 523726834219)
-      expect(request_result).to eq expect_result_xml
+      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(HTTP::Response.new(status: 200, body: expect_result_xml, version: '1.0'))
+      msg = subject.query_single_order(bill_no: 5457, trade_date: '20160805', time_stamp: 523726834219)
+      expect(msg.raw_http_response.body.to_s).to eq expect_result_xml
+      expect(msg.succeed?).to be_truthy
+      expect(msg.bill_no).to eq '0000005457'
+      expect(msg.amount).to eq '149.99'
+      expect(msg.accept_date).to eq '20160805'
+      expect(msg.accept_time).to eq '145441'
+      expect(msg.bill_amount).to eq '159.99'
+      expect(msg.status).to eq '0'
+      expect(msg.card_type).to eq '03'
+      expect(msg.fee).to eq '0.90'
+      expect(msg.merchant_para).to eq 'bill_no%3de943df978e8213715d21b5a12669e0d5'
+      expect(msg.card_no).to eq '622575******6460'
+      expect(msg.bank_seq_no).to eq '16280567000000000030'
+    end
+    specify 'query a not exist order 54561' do
+      request_xml = '<Request><Head><BranchNo>0755</BranchNo><MerchantNo>000257</MerchantNo><TimeStamp>523820622433</TimeStamp><Command>QuerySingleOrder</Command></Head><Body><Date>20160805</Date><BillNo>0000054561</BillNo></Body><Hash>de36872ce482460d0d8993c9f41629432dddc4ea</Hash></Request>'
+      expect_result_xml = '<Response><Head><Code>DX4000</Code><ErrMsg>DX4000.查询单笔订单失败.WWQ1111 - 找不到对应记录 [DX111354]</ErrMsg></Head><Body></Body></Response>'
+      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(HTTP::Response.new(status: 200, body: expect_result_xml, version: '1.0'))
+      msg = subject.query_single_order(bill_no: 54561, trade_date: '20160805', time_stamp: 523820622433)
+      expect(msg.raw_http_response.body.to_s).to eq expect_result_xml
+      expect(msg.succeed?).to be_falsey
     end
   end
 
