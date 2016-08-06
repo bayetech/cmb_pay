@@ -24,7 +24,6 @@ Gem::Specification.new do |spec|
   spec.signing_key = File.expand_path('~/.ssh/gem-private_key.pem') if $PROGRAM_NAME.end_with?('gem')
 
   spec.add_runtime_dependency 'http', '>= 1.0.4', '< 3'
-  spec.add_runtime_dependency 'activesupport', '>= 4.2.6', '< 5.1.x'
   spec.add_development_dependency 'bundler', '~> 1.12'
   spec.add_development_dependency 'rake', '~> 11.2'
   spec.add_development_dependency 'rspec', '~> 3.5'

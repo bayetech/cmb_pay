@@ -1,6 +1,5 @@
 require 'date'
 require 'uri'
-require 'active_support/core_ext/hash'
 require 'http' # https://github.com/httprb/http
 require 'cmb_pay/version'
 require 'cmb_pay/util'
@@ -181,15 +180,7 @@ module CmbPay
     payee_id = options.delete(:payee_id) || CmbPay.default_payee_id
     random = options.delete(:random)
     if protocol.is_a?(Hash) && !payer_id.nil?
-      cmb_reserved_xml = {
-        'PNo' => protocol['PNo'],
-        'TS' => protocol['TS'] || Time.now.strftime('%Y%m%d%H%M%S'),
-        'MchNo' => CmbPay.mch_no,
-        'Seq' => protocol['Seq'],
-        'MUID' => payer_id,
-        'URL' => merchant_url,
-        'Para' => cmb_merchant_para
-      }.to_xml(root: 'Protocol', skip_instruct: true, skip_types: true, indent: 0)
+      cmb_reserved_xml = "<Protocol><PNo>#{protocol['PNo']}</PNo><TS>#{protocol['TS'] || Time.now.strftime('%Y%m%d%H%M%S')}</TS><MchNo>#{CmbPay.mch_no}</MchNo><Seq>#{protocol['Seq']}</Seq><MUID>#{payer_id}</MUID><URL>#{merchant_url}</URL><Para>#{cmb_merchant_para}</Para></Protocol>"
     else
       cmb_reserved_xml = generate_cmb_card_bank_xml(card_bank)
       payee_id = nil
