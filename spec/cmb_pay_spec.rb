@@ -63,10 +63,10 @@ describe CmbPay do
     end
   end
 
-  describe '#cmb_pay_message' do
+  describe '#pay_message' do
     specify 'real CMB result with 2 value of merchant_para' do
       query_params = 'Succeed=Y&CoNo=000056&BillNo=000000&Amount=406.00&Date=20160710&MerchantPara=bill_no=fe5a64de823472dca4186a28759dd264|card_id=0104&Msg=07550000562016071000000000000000000000&Signature=163|81|102|123|242|141|88|91|206|112|113|27|202|119|101|133|231|160|194|14|60|221|40|81|233|0|150|225|72|150|248|74|248|184|183|118|130|213|18|232|100|123|173|74|60|248|142|143|184|14|236|43|248|235|95|38|93|182|253|113|236|212|159|255|'
-      message = subject.cmb_pay_message(query_params)
+      message = subject.pay_message(query_params)
       expect(message.valid?).to be_truthy
       expect(message.succeed?).to be_truthy
       expect(message.co_no).to eq '000056'
@@ -79,7 +79,7 @@ describe CmbPay do
 
     specify 'from a real CMB result should be valid' do
       query_params = 'Succeed=Y&CoNo=000056&BillNo=000000&Amount=0.01&Date=20160707&MerchantPara=&Msg=07550000562016070700000000000000000000&Signature=175|62|163|178|94|30|65|91|222|64|134|15|155|69|149|114|249|195|126|75|149|129|211|228|155|99|47|217|209|211|107|55|2|221|162|99|83|104|99|227|169|18|49|57|142|120|202|141|57|225|147|69|203|248|180|26|75|229|235|106|5|147|113|247|'
-      message = subject.cmb_pay_message(query_params)
+      message = subject.pay_message(query_params)
       expect(message.succeed?).to be_truthy
       expect(message.valid?).to be_truthy
       expect(message.discount?).to be_falsey
@@ -91,7 +91,7 @@ describe CmbPay do
 
     specify 'from a real CMB result should be valid too' do
       query_params = 'Succeed=Y&CoNo=000056&BillNo=000000&Amount=0.01&Date=20160708&MerchantPara=bill_no=3025&Msg=07550000562016070800000000000000000000&Signature=91|8|221|250|17|39|84|234|249|242|86|252|57|81|240|57|232|233|131|152|182|180|253|171|92|49|28|24|237|95|239|118|53|137|96|130|196|128|191|79|131|137|114|43|241|7|204|15|48|138|189|64|255|21|162|157|208|3|70|247|205|118|72|138|'
-      message = subject.cmb_pay_message(query_params)
+      message = subject.pay_message(query_params)
       expect(message.succeed?).to be_truthy
       expect(message.valid?).to be_truthy
       expect(message.amount_cents).to eq 1

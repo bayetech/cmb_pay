@@ -83,7 +83,7 @@ module CmbPay
                          options)
   end
 
-  def self.cmb_pay_message(query_string)
+  def self.pay_message(query_string)
     CmbPay::Message::Pay.new query_string
   end
 
