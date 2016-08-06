@@ -5,7 +5,7 @@ require 'cmb_pay/version'
 require 'cmb_pay/util'
 require 'cmb_pay/sign'
 require 'cmb_pay/merchant_code'
-require 'cmb_pay/message'
+require 'cmb_pay/message/pay'
 require 'cmb_pay/service'
 
 module CmbPay
@@ -84,7 +84,7 @@ module CmbPay
   end
 
   def self.cmb_pay_message(query_string)
-    CmbPay::Message.new query_string
+    CmbPay::Message::Pay.new query_string
   end
 
   # 退款接口
