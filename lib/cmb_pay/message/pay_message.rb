@@ -1,6 +1,5 @@
 module CmbPay
-  module Message
-    class Pay
+    class PayMessage
       attr_accessor :succeed        # 消息成功失败,成功为'Y',失败为'N'
       attr_accessor :co_no          # 商户号，6位长数字，由银行在商户开户时确定
       attr_accessor :bill_no        # 订单号(由支付命令送来)；
@@ -79,5 +78,4 @@ module CmbPay
         URI.decode_www_form(merchant_para.tr('|', '&')).to_h
       end
     end
-  end
 end

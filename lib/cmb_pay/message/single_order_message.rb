@@ -1,8 +1,7 @@
 require 'rexml/document'
 
 module CmbPay
-  module Message
-    class SingleOrder
+    class SingleOrderMessage
       attr_accessor :raw_http_response, :code, :error_message, :bill_no, :amount, :accept_date, :accept_time,
                     :bill_amount, :status, :card_type, :fee, :merchant_para, :card_no, :bank_seq_no
       def initialize(http_response)
@@ -33,5 +32,4 @@ module CmbPay
         code.nil? && error_message.nil?
       end
     end
-  end
 end

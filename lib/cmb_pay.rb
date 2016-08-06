@@ -5,11 +5,12 @@ require 'cmb_pay/version'
 require 'cmb_pay/util'
 require 'cmb_pay/sign'
 require 'cmb_pay/merchant_code'
-require 'cmb_pay/message/pay'
-require 'cmb_pay/message/single_order'
 require 'cmb_pay/service'
 
 module CmbPay
+  autoload(:PayMessage, File.expand_path('cmb_pay/message/pay_message', __dir__))
+  autoload(:SingleOrderMessage, File.expand_path('cmb_pay/message/single_order_message', __dir__))
+
   class << self
     attr_accessor :branch_id          # 开户分行号
     attr_accessor :co_no              # 支付商户号/收单商户号
@@ -85,7 +86,7 @@ module CmbPay
   end
 
   def self.pay_message(query_string)
-    CmbPay::Message::Pay.new query_string
+    PayMessage.new query_string
   end
 
   # 退款接口
@@ -109,7 +110,7 @@ module CmbPay
     head_inner_xml = build_direct_request_x_head('QuerySingleOrder', branch_id, co_no, time_stamp)
     body_inner_xml = "<Date>#{trade_date}</Date><BillNo>#{Util.cmb_bill_no(bill_no)}</BillNo>"
     http_response = hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
-    Message::SingleOrder.new(http_response)
+    SingleOrderMessage.new(http_response)
   end
 
   # 商户入账查询接口
