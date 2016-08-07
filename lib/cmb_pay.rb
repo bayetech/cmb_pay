@@ -9,6 +9,7 @@ require 'cmb_pay/service'
 
 module CmbPay
   autoload(:PayMessage, File.expand_path('cmb_pay/message/pay_message', __dir__))
+  autoload(:RefundOrderMessage, File.expand_path('cmb_pay/message/refund_order_message', __dir__))
   autoload(:SingleOrderMessage, File.expand_path('cmb_pay/message/single_order_message', __dir__))
 
   class << self
@@ -100,7 +101,8 @@ module CmbPay
     head_inner_xml = build_direct_request_x_head('Refund_No_Dup', branch_id, co_no, time_stamp,
                                                  with_operator: true, operator: operator, operator_password: operator_password)
     body_inner_xml = "<Date>#{bill_date}</Date><BillNo>#{Util.cmb_bill_no(bill_no)}</BillNo><RefundNo>#{Util.cmb_bill_no(refund_no)}</RefundNo><Amount>#{refund_amount}</Amount><Desc>#{desc}</Desc>"
-    hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
+    http_response = hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
+    RefundOrderMessage.new(http_response)
   end
 
   # 单笔定单查询接口
