@@ -120,25 +120,19 @@ module CmbPay
   #      填写<QryLopBlk>续传包请求数据</QryLopBlk>中的数据
   def self.query_transact(begin_date:, end_date:, count:, operator: nil, pos: nil,
                           branch_id: nil, co_no: nil, co_key: nil, time_stamp: nil)
-    query_order_by_cmb_command('QueryTransact',
-                               begin_date, end_date, count, operator, pos,
-                               branch_id, co_no, co_key, time_stamp)
+    query_order_by_cmb_command('QueryTransact', begin_date, end_date, count, operator, pos, branch_id, co_no, co_key, time_stamp)
   end
 
   # 按商户日期查询已结账订单接口
   def self.query_settled_order_by_merchant_date(begin_date:, end_date:, count:, operator: nil, pos: nil,
                                                 branch_id: nil, co_no: nil, co_key: nil, time_stamp: nil)
-    query_order_by_cmb_command('QuerySettledOrderByMerchantDate',
-                               begin_date, end_date, count, operator, pos,
-                               branch_id, co_no, co_key, time_stamp)
+    query_order_by_cmb_command('QuerySettledOrderByMerchantDate', begin_date, end_date, count, operator, pos, branch_id, co_no, co_key, time_stamp)
   end
 
   # 按结账日期查询已结账订单接口
   def self.query_settled_order_by_settled_date(begin_date:, end_date:, count:, operator: nil, pos: nil,
                                                branch_id: nil, co_no: nil, co_key: nil, time_stamp: nil)
-    query_order_by_cmb_command('QuerySettledOrderBySettledDate',
-                               begin_date, end_date, count, operator, pos,
-                               branch_id, co_no, co_key, time_stamp)
+    query_order_by_cmb_command('QuerySettledOrderBySettledDate', begin_date, end_date, count, operator, pos, branch_id, co_no, co_key, time_stamp)
   end
 
   private_class_method
