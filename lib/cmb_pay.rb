@@ -120,28 +120,35 @@ module CmbPay
   #      填写<QryLopBlk>续传包请求数据</QryLopBlk>中的数据
   def self.query_transact(begin_date:, end_date:, count:, operator: nil, pos: nil,
                           branch_id: nil, co_no: nil, co_key: nil, time_stamp: nil)
-    head_inner_xml = build_direct_request_x_head('QueryTransact', branch_id, co_no, time_stamp)
-    body_inner_xml = build_direct_request_x_query_body(begin_date, end_date, count, operator, pos)
-    hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
+    query_order_by_cmb_command('QueryTransact',
+                               begin_date, end_date, count, operator, pos,
+                               branch_id, co_no, co_key, time_stamp)
   end
 
   # 按商户日期查询已结账订单接口
   def self.query_settled_order_by_merchant_date(begin_date:, end_date:, count:, operator: nil, pos: nil,
                                                 branch_id: nil, co_no: nil, co_key: nil, time_stamp: nil)
-    head_inner_xml = build_direct_request_x_head('QuerySettledOrderByMerchantDate', branch_id, co_no, time_stamp)
-    body_inner_xml = build_direct_request_x_query_body(begin_date, end_date, count, operator, pos)
-    hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
+    query_order_by_cmb_command('QuerySettledOrderByMerchantDate',
+                               begin_date, end_date, count, operator, pos,
+                               branch_id, co_no, co_key, time_stamp)
   end
 
   # 按结账日期查询已结账订单接口
   def self.query_settled_order_by_settled_date(begin_date:, end_date:, count:, operator: nil, pos: nil,
                                                branch_id: nil, co_no: nil, co_key: nil, time_stamp: nil)
-    head_inner_xml = build_direct_request_x_head('QuerySettledOrderBySettledDate', branch_id, co_no, time_stamp)
-    body_inner_xml = build_direct_request_x_query_body(begin_date, end_date, count, operator, pos)
-    hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
+    query_order_by_cmb_command('QuerySettledOrderBySettledDate',
+                               begin_date, end_date, count, operator, pos,
+                               branch_id, co_no, co_key, time_stamp)
   end
 
   private_class_method
+
+  def self.query_order_by_cmb_command(cmb_command, begin_date, end_date, count, operator, pos,
+                                      branch_id, co_no, co_key, time_stamp)
+    head_inner_xml = build_direct_request_x_head(cmb_command, branch_id, co_no, time_stamp)
+    body_inner_xml = build_direct_request_x_query_body(begin_date, end_date, count, operator, pos)
+    hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
+  end
 
   def self.build_direct_request_x_head(cmb_command, branch_id, co_no, time_stamp,
                                        with_operator: false, operator: nil, operator_password: nil)
