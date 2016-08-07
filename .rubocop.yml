@@ -5,7 +5,7 @@ Documentation:
   Enabled: false
 
 Metrics/LineLength:
-  Max: 150
+  Max: 300
 
 Metrics/AbcSize:
   Max: 57
@@ -21,3 +21,6 @@ Style/NumericLiterals:
 
 Style/AsciiComments:
   Enabled: false
+
+Style/ParameterLists:
+  Max: 12
