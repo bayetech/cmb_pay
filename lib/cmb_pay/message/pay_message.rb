@@ -1,23 +1,23 @@
 module CmbPay
   class PayMessage
-    attr_accessor :succeed        # 消息成功失败,成功为'Y',失败为'N'
-    attr_accessor :co_no          # 商户号，6位长数字，由银行在商户开户时确定
-    attr_accessor :bill_no        # 订单号(由支付命令送来)；
-    attr_accessor :amount         # 实际支付金额(由支付命令送来)
-    attr_accessor :date           # 订单下单日期(由支付命令送来)
-    attr_accessor :merchant_para  # 商户自定义传递参数(由支付命令送来)
-    attr_accessor :msg            # 银行通知用户支付结构消息
-    attr_accessor :discount_flag  # 当前订单是否有优惠，Y:有优惠 N：无优惠。
-    attr_accessor :discount_amt   # 优惠金额，格式：xxxx.xx，当有优惠的时候，
-                                  # 实际用户支付的是amount - discount_amt的金额到商户账号。
+    attr_reader :succeed        # 消息成功失败,成功为'Y',失败为'N'
+    attr_reader :co_no          # 商户号，6位长数字，由银行在商户开户时确定
+    attr_reader :bill_no        # 订单号(由支付命令送来)；
+    attr_reader :amount         # 实际支付金额(由支付命令送来)
+    attr_reader :date           # 订单下单日期(由支付命令送来)
+    attr_reader :merchant_para  # 商户自定义传递参数(由支付命令送来)
+    attr_reader :msg            # 银行通知用户支付结构消息
+    attr_reader :discount_flag  # 当前订单是否有优惠，Y:有优惠 N：无优惠。
+    attr_reader :discount_amt   # 优惠金额，格式：xxxx.xx，当有优惠的时候，
+                                # 实际用户支付的是amount - discount_amt的金额到商户账号。
 
-    attr_accessor :branch_id      # 分行号
-    attr_accessor :bank_date      # 银行主机交易日期
-    attr_accessor :bank_serial_no # 银行流水号
+    attr_reader :branch_id      # 分行号
+    attr_reader :bank_date      # 银行主机交易日期
+    attr_reader :bank_serial_no # 银行流水号
 
-    attr_accessor :signature      # 通知命令签名
+    attr_reader :signature      # 通知命令签名
 
-    attr_reader   :query_string   # 原始的query_string
+    attr_reader :query_string   # 原始的query_string
 
     def initialize(query_string)
       query_string = URI.encode_www_form(query_string) if query_string.is_a? Hash

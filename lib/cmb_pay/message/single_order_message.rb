@@ -2,8 +2,9 @@ require 'rexml/document'
 
 module CmbPay
   class SingleOrderMessage
-    attr_accessor :raw_http_response, :code, :error_message, :bill_no, :amount, :accept_date, :accept_time,
-                  :bill_amount, :status, :card_type, :fee, :merchant_para, :card_no, :bank_seq_no
+    attr_reader :raw_http_response, :code, :error_message,
+                :bill_no, :amount, :accept_date, :accept_time,
+                :bill_amount, :status, :card_type, :fee, :merchant_para, :card_no, :bank_seq_no
     def initialize(http_response)
       @raw_http_response = http_response
       return unless http_response.code == 200

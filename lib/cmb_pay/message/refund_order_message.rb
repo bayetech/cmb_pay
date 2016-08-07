@@ -2,7 +2,7 @@ require 'rexml/document'
 
 module CmbPay
   class RefundOrderMessage
-    attr_accessor :raw_http_response, :code, :error_message
+    attr_reader :raw_http_response, :code, :error_message
     def initialize(http_response)
       @raw_http_response = http_response
       return unless http_response.code == 200
