@@ -159,28 +159,32 @@ describe CmbPay do
     specify 'will post query_transact as direct request X' do
       request_xml = '<Request><Head><BranchNo>0755</BranchNo><MerchantNo>000257</MerchantNo><TimeStamp>523727813775</TimeStamp><Command>QueryTransact</Command></Head><Body><BeginDate>20150919</BeginDate><EndDate>20150923</EndDate><Count>2</Count><Operator>9999</Operator><pos></pos></Body><Hash>7d60537819b0e6db1223b422416eb7ed9d5d725f</Hash></Request>'
       expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><QryLopFlg>Y</QryLopFlg><QryLopBlk>2015091910475716272267400000000010</QryLopBlk><BllRecord><BillNo>0000003305</BillNo><MchDate>20160722</MchDate><StlDate>20150919</StlDate><BillState>0</BillState><BillAmount>0.98</BillAmount><FeeAmount>0.01</FeeAmount><CardType>07</CardType><BillRfn>16272205800000000010</BillRfn><BillType></BillType><StlAmount>0.98</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord><BllRecord><BillNo>0000003306</BillNo><MchDate>20160722</MchDate><StlDate>20150919</StlDate><BillState>0</BillState><BillAmount>4.18</BillAmount><FeeAmount>0.03</FeeAmount><CardType>07</CardType><BillRfn>16272267400000000010</BillRfn><BillType></BillType><StlAmount>4.18</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord></Body></Response>'
-      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(expect_result_xml)
-      request_result = subject.query_transact(begin_date: '20150919', end_date: '20150923', count: 2,
-                                              time_stamp: 523727813775)
-      expect(request_result).to eq expect_result_xml
+      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(HTTP::Response.new(status: 200, body: expect_result_xml, version: '1.0'))
+      msg = subject.query_transact(begin_date: '20150919', end_date: '20150923', count: 2,
+                                   time_stamp: 523727813775)
+      expect(msg.raw_http_response.body.to_s).to eq expect_result_xml
+      expect(msg.succeed?).to be_truthy
+      expect(msg.bill_records.count).to eq 2
     end
 
     specify 'will post query_transact as direct request X with pos' do
       request_xml = '<Request><Head><BranchNo>0755</BranchNo><MerchantNo>000257</MerchantNo><TimeStamp>523730558849</TimeStamp><Command>QueryTransact</Command></Head><Body><BeginDate>20150919</BeginDate><EndDate>20150923</EndDate><Count>2</Count><Operator>9999</Operator><pos>2015091910475716272267400000000010</pos></Body><Hash>aff9f9c46455c2165c64b8380df079a398ca26c9</Hash></Request>'
       expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><QryLopFlg>Y</QryLopFlg><QryLopBlk>2015091910524216272262700000000010</QryLopBlk><BllRecord><BillNo>0000003309</BillNo><MchDate>20160722</MchDate><StlDate>20150919</StlDate><BillState>0</BillState><BillAmount>6.88</BillAmount><FeeAmount>0.04</FeeAmount><CardType>07</CardType><BillRfn>16272225300000000010</BillRfn><BillType></BillType><StlAmount>6.88</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord><BllRecord><BillNo>0000003310</BillNo><MchDate>20160722</MchDate><StlDate>20150919</StlDate><BillState>0</BillState><BillAmount>6.88</BillAmount><FeeAmount>0.04</FeeAmount><CardType>07</CardType><BillRfn>16272262700000000010</BillRfn><BillType></BillType><StlAmount>6.88</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord></Body></Response>'
-      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(expect_result_xml)
-      request_result = subject.query_transact(begin_date: '20150919', end_date: '20150923', count: 2, pos: '2015091910475716272267400000000010',
-                                              time_stamp: 523730558849)
-      expect(request_result).to eq expect_result_xml
+      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(HTTP::Response.new(status: 200, body: expect_result_xml, version: '1.0'))
+      msg = subject.query_transact(begin_date: '20150919', end_date: '20150923', count: 2, pos: '2015091910475716272267400000000010',
+                                   time_stamp: 523730558849)
+      expect(msg.raw_http_response.body.to_s).to eq expect_result_xml
+      expect(msg.bill_records.count).to eq 2
     end
 
     specify 'will post query_transact as direct request X as different account' do
       request_xml = '<Request><Head><BranchNo>0731</BranchNo><MerchantNo>000005</MerchantNo><TimeStamp>523042695395</TimeStamp><Command>QueryTransact</Command></Head><Body><BeginDate>20160726</BeginDate><EndDate>20160727</EndDate><Count>10</Count><Operator>9999</Operator><pos></pos></Body><Hash>5921609f50ff447c5f610fdf4607cb5416fe97ed</Hash></Request>'
-      expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><QryLopFlg>N</QryLopFlg><QryLopBlk>00000000000000                    </QryLopBlk></Body></Response>'
-      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(expect_result_xml)
-      request_result = subject.query_transact(begin_date: '20160726', end_date: '20160727', count: 10,
-                                              branch_id: '0731', co_no: '000005', time_stamp: 523042695395)
-      expect(request_result).to eq expect_result_xml
+      expect_result_xml = '<Response><Head><Code>T</Code><ErrMsg>T</ErrMsg></Head><Body><QryLopFlg>N</QryLopFlg><QryLopBlk>00000000000000                    </QryLopBlk></Body></Response>'
+      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(HTTP::Response.new(status: 200, body: expect_result_xml, version: '1.0'))
+      msg = subject.query_transact(begin_date: '20160726', end_date: '20160727', count: 10,
+                                   branch_id: '0731', co_no: '000005', time_stamp: 523042695395)
+      expect(msg.raw_http_response.body.to_s).to eq expect_result_xml
+      expect(msg.bill_records.count).to eq 0
     end
   end
 
@@ -188,39 +192,45 @@ describe CmbPay do
     specify 'will post query_settled_order_by_merchant_date as direct request X' do
       request_xml = '<Request><Head><BranchNo>0755</BranchNo><MerchantNo>000257</MerchantNo><TimeStamp>523731435008</TimeStamp><Command>QuerySettledOrderByMerchantDate</Command></Head><Body><BeginDate>20160805</BeginDate><EndDate>20160805</EndDate><Count>2</Count><Operator>9999</Operator><pos></pos></Body><Hash>3f33ffbbe9a54a9b86a0b18cd7226a51dc11f4f5</Hash></Request>'
       expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><QryLopFlg>Y</QryLopFlg><QryLopBlk>HH00012016080515443416280566200000000020</QryLopBlk><BllRecord><BillNo>0000005477</BillNo><MchDate>20160805</MchDate><StlDate>20160805</StlDate><BillState>0</BillState><BillAmount>0.03</BillAmount><FeeAmount>0.00</FeeAmount><CardType>03</CardType><BillRfn>16280573200000000010</BillRfn><BillType></BillType><StlAmount>0.03</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord><BllRecord><BillNo>0000005474</BillNo><MchDate>20160805</MchDate><StlDate>20160805</StlDate><BillState>0</BillState><BillAmount>0.03</BillAmount><FeeAmount>0.00</FeeAmount><CardType>03</CardType><BillRfn>16280566200000000020</BillRfn><BillType></BillType><StlAmount>0.03</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord></Body></Response>'
-      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(expect_result_xml)
-      request_result = subject.query_settled_order_by_merchant_date(begin_date: '20160805', end_date: '20160805', count: 2,
-                                                                    time_stamp: 523731435008)
-      expect(request_result).to eq expect_result_xml
+      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(HTTP::Response.new(status: 200, body: expect_result_xml, version: '1.0'))
+      msg = subject.query_settled_order_by_merchant_date(begin_date: '20160805', end_date: '20160805', count: 2,
+                                                         time_stamp: 523731435008)
+      expect(msg.raw_http_response.body.to_s).to eq expect_result_xml
+      expect(msg.bill_records.count).to eq 2
     end
 
     specify 'will post query_settled_order_by_merchant_date with pos' do
       request_xml = '<Request><Head><BranchNo>0755</BranchNo><MerchantNo>000257</MerchantNo><TimeStamp>523731718930</TimeStamp><Command>QuerySettledOrderByMerchantDate</Command></Head><Body><BeginDate>20160805</BeginDate><EndDate>20160805</EndDate><Count>3</Count><Operator>9999</Operator><pos>HH00012016080515443416280566200000000020</pos></Body><Hash>956b8f831c0490fdc7d35038a9b2ebc3ce450cda</Hash></Request>'
       expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><QryLopFlg>Y</QryLopFlg><QryLopBlk>HH00012016080515301916280567000000000040</QryLopBlk><BllRecord><BillNo>0000005472</BillNo><MchDate>20160805</MchDate><StlDate>20160805</StlDate><BillState>0</BillState><BillAmount>0.03</BillAmount><FeeAmount>0.00</FeeAmount><CardType>03</CardType><BillRfn>16280525100000000010</BillRfn><BillType></BillType><StlAmount>0.03</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord><BllRecord><BillNo>0000005471</BillNo><MchDate>20160805</MchDate><StlDate>20160805</StlDate><BillState>0</BillState><BillAmount>0.03</BillAmount><FeeAmount>0.00</FeeAmount><CardType>03</CardType><BillRfn>16280566100000000020</BillRfn><BillType></BillType><StlAmount>0.03</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord><BllRecord><BillNo>0000005469</BillNo><MchDate>20160805</MchDate><StlDate>20160805</StlDate><BillState>0</BillState><BillAmount>0.03</BillAmount><FeeAmount>0.00</FeeAmount><CardType>03</CardType><BillRfn>16280567000000000040</BillRfn><BillType></BillType><StlAmount>0.03</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord></Body></Response>'
-      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(expect_result_xml)
-      request_result = subject.query_settled_order_by_merchant_date(begin_date: '20160805', end_date: '20160805', count: 3, pos: 'HH00012016080515443416280566200000000020',
-                                                                    time_stamp: 523731718930)
-      expect(request_result).to eq expect_result_xml
+      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(HTTP::Response.new(status: 200, body: expect_result_xml, version: '1.0'))
+      msg = subject.query_settled_order_by_merchant_date(begin_date: '20160805', end_date: '20160805', count: 3, pos: 'HH00012016080515443416280566200000000020',
+                                                         time_stamp: 523731718930)
+      expect(msg.raw_http_response.body.to_s).to eq expect_result_xml
+      expect(msg.bill_records.count).to eq 3
     end
   end
 
   describe '#query_settled_order_by_settled_date' do
     specify 'will post query_settled_order_by_settled_date as direct request X' do
       request_xml = '<Request><Head><BranchNo>0755</BranchNo><MerchantNo>000257</MerchantNo><TimeStamp>523732011805</TimeStamp><Command>QuerySettledOrderBySettledDate</Command></Head><Body><BeginDate>20160805</BeginDate><EndDate>20160805</EndDate><Count>1</Count><Operator>9999</Operator><pos></pos></Body><Hash>779a26d9beea763db5f4a7c783a329cc1f087caa</Hash></Request>'
-      expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><QryLopFlg>Y</QryLopFlg><QryLopBlk>HH00012016080515533016280573200000000010</QryLopBlk><BllRecord><BillNo>0000005477</BillNo><MchDate>20160805</MchDate><StlDate>20160805</StlDate><BillState>6</BillState><BillAmount>0.03</BillAmount><FeeAmount>0.00</FeeAmount><CardType>03</CardType><BillRfn>16280573200000000010</BillRfn><BillType></BillType><StlAmount>0.03</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord></Body></Response>'
-      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(expect_result_xml)
-      request_result = subject.query_settled_order_by_settled_date(begin_date: '20160805', end_date: '20160805', count: 1,
-                                                                   time_stamp: 523732011805)
-      expect(request_result).to eq expect_result_xml
+      expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><QryLopFlg>Y</QryLopFlg><QryLopBlk>HH00012016080515533016280573200000000010</QryLopBlk><BllRecord><BillNo>0000005477</BillNo><MchDate>20160805</MchDate><StlDate>20160805</StlDate><BillState>6</BillState><BillAmount>0.03</BillAmount><FeeAmount>0.00</FeeAmount><CardType>03</CardType><BillRfn>16280573200000000010</BillRfn><BillType>T</BillType><StlAmount>0.03</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord></Body></Response>'
+      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(HTTP::Response.new(status: 200, body: expect_result_xml, version: '1.0'))
+      msg = subject.query_settled_order_by_settled_date(begin_date: '20160805', end_date: '20160805', count: 1,
+                                                        time_stamp: 523732011805)
+      expect(msg.raw_http_response.body.to_s).to eq expect_result_xml
+      expect(msg.bill_records.count).to eq 1
     end
 
     specify 'will post query_settled_order_by_settled_date with pos' do
       request_xml = '<Request><Head><BranchNo>0755</BranchNo><MerchantNo>000257</MerchantNo><TimeStamp>523732240132</TimeStamp><Command>QuerySettledOrderBySettledDate</Command></Head><Body><BeginDate>20160805</BeginDate><EndDate>20160805</EndDate><Count>2</Count><Operator>9999</Operator><pos>HH00012016080515533016280573200000000010</pos></Body><Hash>845e207806d9d8b76e9767d7b3b70e3998368e56</Hash></Request>'
       expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><QryLopFlg>Y</QryLopFlg><QryLopBlk>HH00012016080515415316280525100000000010</QryLopBlk><BllRecord><BillNo>0000005474</BillNo><MchDate>20160805</MchDate><StlDate>20160805</StlDate><BillState>6</BillState><BillAmount>0.03</BillAmount><FeeAmount>0.00</FeeAmount><CardType>03</CardType><BillRfn>16280566200000000020</BillRfn><BillType></BillType><StlAmount>0.03</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord><BllRecord><BillNo>0000005472</BillNo><MchDate>20160805</MchDate><StlDate>20160805</StlDate><BillState>6</BillState><BillAmount>0.03</BillAmount><FeeAmount>0.00</FeeAmount><CardType>03</CardType><BillRfn>16280525100000000010</BillRfn><BillType></BillType><StlAmount>0.03</StlAmount><DecPayAmount>0.00</DecPayAmount></BllRecord></Body></Response>'
-      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(expect_result_xml)
-      request_result = subject.query_settled_order_by_settled_date(begin_date: '20160805', end_date: '20160805', count: 2, pos: 'HH00012016080515533016280573200000000010',
-                                                                   time_stamp: 523732240132)
-      expect(request_result).to eq expect_result_xml
+      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(HTTP::Response.new(status: 200, body: expect_result_xml, version: '1.0'))
+      msg = subject.query_settled_order_by_settled_date(begin_date: '20160805', end_date: '20160805', count: 2, pos: 'HH00012016080515533016280573200000000010',
+                                                        time_stamp: 523732240132)
+      expect(msg.raw_http_response.body.to_s).to eq expect_result_xml
+      expect(msg.query_loop_flag).to eq 'Y'
+      expect(msg.query_loop_pos).to eq 'HH00012016080515415316280525100000000010'
+      expect(msg.bill_records.count).to eq 2
     end
   end
 end

@@ -11,6 +11,7 @@ module CmbPay
   autoload(:PayMessage, File.expand_path('cmb_pay/message/pay_message', __dir__))
   autoload(:RefundOrderMessage, File.expand_path('cmb_pay/message/refund_order_message', __dir__))
   autoload(:SingleOrderMessage, File.expand_path('cmb_pay/message/single_order_message', __dir__))
+  autoload(:BillRecordsMessage, File.expand_path('cmb_pay/message/bill_records_message', __dir__))
 
   class << self
     attr_accessor :branch_id          # 开户分行号
@@ -141,7 +142,8 @@ module CmbPay
                                       branch_id, co_no, co_key, time_stamp)
     head_inner_xml = build_direct_request_x_head(cmb_command, branch_id, co_no, time_stamp)
     body_inner_xml = build_direct_request_x_query_body(begin_date, end_date, count, operator, pos)
-    hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
+    http_response = hash_and_direct_request_x(co_key, head_inner_xml, body_inner_xml)
+    BillRecordsMessage.new(http_response)
   end
 
   def self.build_direct_request_x_head(cmb_command, branch_id, co_no, time_stamp,
