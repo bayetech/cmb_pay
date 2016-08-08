@@ -38,18 +38,31 @@ module CmbPay
         end
       elsif @in_body
         case @current_element_name
+        # 续传标记(采用多次通讯方式续传时使用) 默认值为’N’，表示没有后续数据包，’Y’表示仍有后续的通讯包
         when 'QryLopFlg'    then @query_loop_flag = text
+        # 续传包请求数据
         when 'QryLopBlk'    then @query_loop_pos = text
+        # 商户定单号
         when 'BillNo'       then @current_bill_record[:bill_no] = text
+        # 商户日期
         when 'MchDate'      then @current_bill_record[:merchant_date] = text
+        # 结算日期
         when 'StlDate'      then @current_bill_record[:settled_date] = text
+        # 订单状态
         when 'BillState'    then @current_bill_record[:bill_state] = text
+        # 订单金额
         when 'BillAmount'   then @current_bill_record[:bill_amount] = text
+        # 手续费
         when 'FeeAmount'    then @current_bill_record[:fee_amount] = text
+        # 卡类型
         when 'CardType'     then @current_bill_record[:card_type] = text
+        # 交易流水号
         when 'BillRfn'      then @current_bill_record[:bill_ref_no] = text
+        # 订单类型：A表示二维码支付订单，B表示普通订单
         when 'BillType'     then @current_bill_record[:bill_type] = text
+        # 实扣金额
         when 'StlAmount'    then @current_bill_record[:settled_amount] = text
+        # 优惠金额
         when 'DecPayAmount' then @current_bill_record[:discount_pay_amount] = text
         end
       end
