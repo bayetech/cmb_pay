@@ -58,12 +58,22 @@ module CmbPay
         when 'CardType'     then @current_bill_record[:card_type] = text
         # 交易流水号
         when 'BillRfn'      then @current_bill_record[:bill_ref_no] = text
-        # 订单类型：A表示二维码支付订单，B表示普通订单
-        when 'BillType'     then @current_bill_record[:bill_type] = text
         # 实扣金额
         when 'StlAmount'    then @current_bill_record[:settled_amount] = text
         # 优惠金额
         when 'DecPayAmount' then @current_bill_record[:discount_pay_amount] = text
+        # 订单类型：A表示二维码支付订单，B表示普通订单
+        when 'BillType'     then @current_bill_record[:bill_type] = text
+        # 如果订单类型为A，下述字段才存在
+        when 'Addressee'    then @current_bill_record[:addressee] = text # 收货人姓名
+        when 'Country'      then @current_bill_record[:country] = text   # 国家
+        when 'Province'     then @current_bill_record[:province] = text  # 省份
+        when 'City'         then @current_bill_record[:city] = text      # 城市
+        when 'Address'      then @current_bill_record[:address] = text   # 街道地址
+        when 'Mobile'       then @current_bill_record[:mobile] = text    # 手机号
+        when 'Telephone'    then @current_bill_record[:telephone] = text # 固定电话
+        when 'ZipCode'      then @current_bill_record[:zipcode] = text   # 邮编
+        when 'GoodsURL'     then @current_bill_record[:goodsurl] = text  # 商品详情链接
         end
       end
     end
