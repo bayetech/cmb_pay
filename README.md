@@ -3,6 +3,14 @@ CMB Pay [![Gem Version][version-badge]][rubygems] [![Build Status][travis-badge]
 
 An unofficial cmb (China Merchants Bank) pay ruby gem, inspired from [alipay](https://github.com/chloerei/alipay), [wx_pay](https://github.com/jasl/wx_pay) and [cmbchina](https://github.com/yellong/cmbchina) a lot.
 
+## Feature
+
+* Payment URL generation for Web, App and WAP(Mobile Web).
+* CMB Bank notification payment callback parse and verify.
+* Direct refund API.
+* Single order query.
+* Multi orders query by transact/merchant date/settled date.
+
 ## Installation
 
 Add this line to your application's Gemfile:
