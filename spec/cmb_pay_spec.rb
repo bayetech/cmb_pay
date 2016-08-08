@@ -114,6 +114,16 @@ describe CmbPay do
       expect(msg.succeed?).to be_falsey
       expect(msg.code).to eq 'NP2009'
     end
+
+    specify 'post refund_no_dup 5457, after bank allow directly refund' do
+      request_xml = '<Request><Head><BranchNo>0755</BranchNo><MerchantNo>000257</MerchantNo><Operator>9999</Operator><Password>000257</Password><TimeStamp>523972537658</TimeStamp><Command>Refund_No_Dup</Command></Head><Body><Date>20160805</Date><BillNo>0000005457</BillNo><RefundNo>0000000097</RefundNo><Amount>149.99</Amount><Desc>test in Monday</Desc></Body><Hash>549265f99f4aa0a89405f2fcea0a59b8c3c72453</Hash></Request>'
+      expect_result_xml = '<Response><Head><Code></Code><ErrMsg></ErrMsg></Head><Body><RefundNo>0000000097</RefundNo><Amount>149.99</Amount><Date>20160808</Date><Time>115149</Time><BankSeqNo>16280844600000000010</BankSeqNo></Body></Response>'
+      expect(HTTP).to receive(:post).with(CmbPay::Service.request_gateway_url(:DirectRequestX), form: { 'Request' => request_xml }).and_return(HTTP::Response.new(status: 200, body: expect_result_xml, version: '1.0'))
+      msg = subject.refund_no_dup(bill_no: 5457, refund_no: 97, refund_amount_in_cents: 14999, memo: 'test in Monday', bill_date: '20160805', operator_password: '000257', time_stamp: 523972537658)
+      expect(msg.raw_http_response.body.to_s).to eq expect_result_xml
+      expect(msg.succeed?).to be_truthy
+      expect(msg.bank_seq_no).to eq '16280844600000000010'
+    end
   end
 
   describe '#query_single_order' do
