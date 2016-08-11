@@ -101,6 +101,16 @@ describe CmbPay do
       expect(message.merchant_para).to eq 'bill_no=3025'
       expect(message.merchant_params['bill_no']).to eq '3025'
     end
+
+    specify 'from a real App Mobile callback' do
+      query_params = 'Succeed=Y&CoNo=000257&BillNo=0000005577&Amount=138.00&Date=20160811&MerchantPara=bill_no=eea9259f0604d4b1d361742083e6f243&Msg=07550002572016081116281119400000000010&DiscountFlag=Y&DiscountAmt=10.00&Signature=169|151|118|188|238|233|243|159|208|186|118|137|23|244|237|207|68|205|240|29|182|168|151|203|61|183|202|255|33|204|134|211|70|22|143|173|96|33|118|193|144|250|255|223|166|73|102|166|231|238|190|63|48|60|175|153|208|38|178|137|209|118|128|205|'
+      message = subject.pay_message(query_params)
+      expect(message.succeed?).to be_truthy
+      expect(message.valid?).to be_truthy
+      expect(message.co_no).to eq '000257'
+      expect(message.date).to eq '20160811'
+      expect(message.merchant_params['bill_no']).to eq 'eea9259f0604d4b1d361742083e6f243'
+    end
   end
 
   describe '#refund_no_dup' do
