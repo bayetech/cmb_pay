@@ -37,14 +37,14 @@ Create `config/initializers/cmb_pay.rb` and put following configurations into it
 # required
 CmbPay.branch_id = '0755'     # 支付商户开户分行号，4位
 CmbPay.co_no = '000056' # 支付商户号/收单商户号，6位长数字，由银行在商户开户时确定
-CmbPay.co_key = ''            # 商户校验码/商户密钥，测试环境为空
+CmbPay.co_key = ''            # 商户校验码/商户密钥，测试环境为空，注意保密
 CmbPay.environment = 'test' if Rails.env.development? || Rails.env.staging?
 # only require by uri_of_pre_pay_euserp
 CmbPay.mch_no = 'P0019844'    # 协议商户企业编号，或者说是8位虚拟企业网银编号
 CmbPay.default_payee_id = '1' # 默认收款方的用户标识
 # onlyl require if you need refund via cmb_pay (no need if you using CMB bank web)
 CmbPay.operator = '9999'      # 操作员号，一般是9999
-CmbPay.operator_password = '' # 操作员的密码，默认是支付商户号，但建议修改。
+CmbPay.operator_password = '' # 操作员的密码，默认是支付商户号，但建议修改，注意保密，仅直连退款需要
 ```
 
 ## Development
