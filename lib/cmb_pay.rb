@@ -79,11 +79,11 @@ module CmbPay
   end
 
   def self.uri_of_pre_pay_wap(bill_no:, amount_in_cents:, merchant_url:, merchant_para: nil,
-                              card_bank: nil,
+                              merchant_ret_url:, merchant_ret_para: nil, card_bank: nil,
                               options: {})
     generate_pay_link_of('PrePayWAP',
                          nil, bill_no, amount_in_cents, merchant_url, merchant_para,
-                         nil, nil, nil, card_bank,
+                         nil, merchant_ret_url, merchant_ret_para, card_bank,
                          options)
   end
 
@@ -211,7 +211,7 @@ module CmbPay
       'MerchantCode' => m_code
     }
     uri_params['MerchantRetUrl'] = merchant_ret_url unless merchant_ret_url.nil?
-    uri_params['MerchantRetPara'] = merchant_ret_para unless merchant_ret_para.nil?
+    uri_params['MerchantRetPara'] = Service.encode_merchant_para(merchant_ret_para) unless merchant_ret_para.nil?
     Service.request_uri(pay_type, uri_params)
   end
 
