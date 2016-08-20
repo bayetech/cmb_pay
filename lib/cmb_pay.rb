@@ -92,8 +92,7 @@ module CmbPay
     '娱乐休闲' => 54_010_8,
     '网络服务' => 54_011_690,
     '收藏爱好' => 54_011_691,
-    '投资理财' => 54_011_692,
-    '其他' => 54_011_600
+    '投资理财' => 54_011_692
   }.freeze
 
   def self.uri_of_pre_pay_euserp(payer_id:, bill_no:, amount_in_cents:, merchant_url:, merchant_para: nil,
