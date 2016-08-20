@@ -35,7 +35,7 @@ describe CmbPay do
                                       merchant_ret_url: 'browser_return_url',
                                       options: { random: '3.14', trade_date: trade_date })
       expect_result = 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?TestPrePayC2?BranchID=0755&CoNo=000257&BillNo=0000000000&Amount=0.01&Date=' \
-        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=&MerchantCode=%7CVkLiT8ilJWdg%2FVx%2F1azzKX7lOMk%3D%7Cac5c86147aba47fd5fd9a5974adfda66529d7dd8&MerchantRetUrl=browser_return_url'
+        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=&MerchantCode=%7CVkLiT8ilJWdg%2FVx%2F1azzKX7lOMkq1bOMI7nH3slVVFPxKF5TxQd9SH1KGG*rk8*43CJMLmRRvw%3D%3D%7Ca2a17d2c32f678e13c32620aa1dc8b6c217b1569&MerchantRetUrl=browser_return_url'
       expect(uri.to_s).to eq expect_result
     end
 
@@ -46,7 +46,7 @@ describe CmbPay do
                                       merchant_ret_url: 'browser_return_url', card_bank: '上海银行',
                                       options: { random: '3.14', trade_date: trade_date })
       expect_result = 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?TestPrePayC2?BranchID=0755&CoNo=000257&BillNo=0000000000&Amount=0.01&Date=' \
-        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=&MerchantCode=%7CVkLiT8ilJWdg%2FVx%2F1azzKX7lOMkq1aaGP7jG%2FNVBFUnzXgsRkHQqFSdIB3jdz5zz7BdHOkMU7xm4lTdGjdEue96pgHKXNQ%3D%3D%7C4a50c9d582345d50f9e7b449846014a17f5e79d2&MerchantRetUrl=browser_return_url'
+        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=&MerchantCode=%7CVkLiT8ilJWdg%2FVx%2F1azzKX7lOMkq1bOMI7nH3slVVFPxKF5TxQd9SH1KGG*rk8*43CJMLmRRv06i*30RusYre8j72yrwar3QVmuyRSm0RN*XjzWb%2FHkDqmDK9%2FNLwKgfho4umlmhJvLU%7Cc05e7655018f36ba20df3b4b082184f723c3043d&MerchantRetUrl=browser_return_url'
       expect(uri.to_s).to eq expect_result
     end
   end
@@ -54,11 +54,11 @@ describe CmbPay do
   describe '#uri_of_pre_pay_wap' do
     specify 'will return PrePayWAP China Merchants Bank URI' do
       trade_date = Time.parse('July 11 2016').strftime('%Y%m%d')
-      uri = subject.uri_of_pre_pay_wap(bill_no: 000000, amount_in_cents: 1,
+      uri = subject.uri_of_pre_pay_wap(bill_no: 000000, amount_in_cents: 2,
                                        merchant_url: 'my_website_url', merchant_ret_url: 'browser_return_url',
                                        options: { random: '3.14', trade_date: trade_date })
-      expect_result = 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?TestPrePayWAP?BranchID=0755&CoNo=000257&BillNo=0000000000&Amount=0.01&Date=' \
-        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=&MerchantCode=%7CVkLiT8ilJWdg%2FVx%2F1azzKX7lOMk%3D%7C25499edb45eec01bf715cd877523652c01578c6c&MerchantRetUrl=browser_return_url'
+      expect_result = 'https://netpay.cmbchina.com/netpayment/BaseHttp.dll?TestPrePayWAP?BranchID=0755&CoNo=000257&BillNo=0000000000&Amount=0.02&Date=' \
+        + trade_date + '&ExpireTimeSpan=30&MerchantUrl=my_website_url&MerchantPara=&MerchantCode=%7CVkLiT8ilJWdg%2FVx%2F1azzKX7lOMk%3D%7Cf62b427aeb2be66e1de524bddeb42bd3f0c5f2dc&MerchantRetUrl=browser_return_url'
       expect(uri.to_s).to eq expect_result
     end
   end

@@ -223,7 +223,11 @@ module CmbPay
     cmb_merchant_para = Service.encode_merchant_para(merchant_para)
     trade_date = options.delete(:trade_date) || Time.now.strftime('%Y%m%d')
     payee_id = options.delete(:payee_id) || CmbPay.default_payee_id
-    goods_type = options.delete(:goods_type) || CmbPay.default_goods_type
+    goods_type = if amount_in_cents == 1 && CmbPay.one_cent_as_newspaper == true
+                   '书报杂志'
+                 else
+                   options.delete(:goods_type) || CmbPay.default_goods_type
+                 end
     random = options.delete(:random)
     if protocol.is_a?(Hash) && !payer_id.nil?
       cmb_reserved_xml = "<Protocol><PNo>#{protocol['PNo']}</PNo><TS>#{protocol['TS'] || Time.now.strftime('%Y%m%d%H%M%S')}</TS><MchNo>#{CmbPay.mch_no}</MchNo><Seq>#{protocol['Seq']}</Seq><MUID>#{payer_id}</MUID><URL>#{merchant_url}</URL><Para>#{cmb_merchant_para}</Para></Protocol>"
