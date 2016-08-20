@@ -14,16 +14,17 @@ module CmbPay
   autoload(:BillRecordsMessage, File.expand_path('cmb_pay/message/bill_records_message', __dir__))
 
   class << self
-    attr_accessor :branch_id          # 开户分行号
-    attr_accessor :co_no              # 支付商户号/收单商户号
-    attr_accessor :co_key             # 商户校验码/商户密钥，测试环境为空
-    attr_accessor :mch_no             # 协议商户企业编号，或者说是8位虚拟企业网银编号
-    attr_accessor :operator           # 操作员号，一般是9999
-    attr_accessor :operator_password  # 操作员的密码，默认是支付商户号，但建议修改。
-    attr_accessor :expire_in_minutes  # 会话有效时间
-    attr_accessor :environment        # 调用的招商银行支付环境，默认生产，测试填test
-    attr_accessor :default_payee_id   # 默认收款方的用户标识
-    attr_accessor :default_goods_type # 默认收款方的商品类型
+    attr_accessor :branch_id             # 开户分行号
+    attr_accessor :co_no                 # 支付商户号/收单商户号
+    attr_accessor :co_key                # 商户校验码/商户密钥，测试环境为空
+    attr_accessor :mch_no                # 协议商户企业编号，或者说是8位虚拟企业网银编号
+    attr_accessor :operator              # 操作员号，一般是9999
+    attr_accessor :operator_password     # 操作员的密码，默认是支付商户号，但建议修改。
+    attr_accessor :expire_in_minutes     # 会话有效时间
+    attr_accessor :environment           # 调用的招商银行支付环境，默认生产，测试填test
+    attr_accessor :default_payee_id      # 默认收款方的用户标识
+    attr_accessor :default_goods_type    # 默认收款方的商品类型
+    attr_accessor :one_cent_as_newspaper # 仅支付一分钱，商品类型直接归类到书报杂志，方便在生产上做快速测试和对账，默认启用
   end
   @co_key = ''
   @mch_no = ''
@@ -31,6 +32,7 @@ module CmbPay
   @operator_password = ''
   @expire_in_minutes = 30
   @environment = :production
+  @one_cent_as_newspaper = true
 
   SUPPORTED_BANK = {
     '招商银行' => nil,
