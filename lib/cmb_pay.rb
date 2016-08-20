@@ -23,6 +23,7 @@ module CmbPay
     attr_accessor :expire_in_minutes  # 会话有效时间
     attr_accessor :environment        # 调用的招商银行支付环境，默认生产，测试填test
     attr_accessor :default_payee_id   # 默认收款方的用户标识
+    attr_accessor :default_goods_type # 默认收款方的商品类型
   end
   @co_key = ''
   @mch_no = ''
@@ -221,6 +222,7 @@ module CmbPay
     cmb_merchant_para = Service.encode_merchant_para(merchant_para)
     trade_date = options.delete(:trade_date) || Time.now.strftime('%Y%m%d')
     payee_id = options.delete(:payee_id) || CmbPay.default_payee_id
+    goods_type = options.delete(:goods_type) || CmbPay.default_goods_type
     random = options.delete(:random)
     if protocol.is_a?(Hash) && !payer_id.nil?
       cmb_reserved_xml = "<Protocol><PNo>#{protocol['PNo']}</PNo><TS>#{protocol['TS'] || Time.now.strftime('%Y%m%d%H%M%S')}</TS><MchNo>#{CmbPay.mch_no}</MchNo><Seq>#{protocol['Seq']}</Seq><MUID>#{payer_id}</MUID><URL>#{merchant_url}</URL><Para>#{cmb_merchant_para}</Para></Protocol>"
@@ -232,7 +234,7 @@ module CmbPay
                                    branch_id: branch_id, co_no: co_no,
                                    bill_no: cmb_bill_no, amount: pay_amount,
                                    merchant_para: cmb_merchant_para, merchant_url: merchant_url,
-                                   payer_id: payer_id, payee_id: payee_id,
+                                   payer_id: payer_id, payee_id: payee_id, goods_type: encode_goods_type(goods_type),
                                    reserved: cmb_reserved_xml)
     uri_params = {
       'BranchID' => branch_id,
@@ -254,5 +256,10 @@ module CmbPay
     return "<CardBank>#{format('%04d', card_bank.to_i)}</CardBank>" if /^\d+$/ =~ card_bank.to_s
     return nil if SUPPORTED_BANK[card_bank].nil?
     "<CardBank>#{format('%04d', SUPPORTED_BANK[card_bank])}</CardBank>"
+  end
+
+  def self.encode_goods_type(goods_type)
+    return goods_type if /^\d+$/ =~ goods_type.to_s
+    GOODS_TYPE[goods_type]
   end
 end
