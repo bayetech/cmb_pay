@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description   = 'Helping rubyist integration with cmb (China Merchants Bank) payment service (招商银行一网通支付) easier.'
   spec.homepage      = 'https://github.com/bayetech/cmb_pay'
   spec.license       = 'MIT'
-  spec.required_ruby_version = '~> 2.1'
+  spec.required_ruby_version = '~> 2.3'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(spec|features)/}) } \
     - %w(CODE_OF_CONDUCT.md cmb-pay.sublime-project Gemfile Rakefile cmb_pay.gemspec bin/setup bin/console certs/Eric-Guo.pem)
