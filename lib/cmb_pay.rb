@@ -216,6 +216,7 @@ module CmbPay
     branch_id = options.delete(:branch_id) || CmbPay.branch_id
     co_no = options.delete(:co_no) || CmbPay.co_no
     co_key = options.delete(:co_key) || CmbPay.co_key
+    mch_no = options.delete(:mch_no) || CmbPay.mch_no
     cmb_bill_no = Util.cmb_bill_no(bill_no)
     expire_in_minutes = options.delete(:expire_in_minutes) || CmbPay.expire_in_minutes
     pay_in_yuan, pay_in_cent = amount_in_cents.to_i.divmod(100)
@@ -230,7 +231,7 @@ module CmbPay
                  end
     random = options.delete(:random)
     if protocol.is_a?(Hash) && !payer_id.nil?
-      cmb_reserved_xml = "<Protocol><PNo>#{protocol['PNo']}</PNo><TS>#{protocol['TS'] || Time.now.strftime('%Y%m%d%H%M%S')}</TS><MchNo>#{CmbPay.mch_no}</MchNo><Seq>#{protocol['Seq']}</Seq><MUID>#{payer_id}</MUID><URL>#{merchant_url}</URL><Para>#{cmb_merchant_para}</Para></Protocol>"
+      cmb_reserved_xml = "<Protocol><PNo>#{protocol['PNo']}</PNo><TS>#{protocol['TS'] || Time.now.strftime('%Y%m%d%H%M%S')}</TS><MchNo>#{mch_no}</MchNo><Seq>#{protocol['Seq']}</Seq><MUID>#{payer_id}</MUID><URL>#{merchant_url}</URL><Para>#{cmb_merchant_para}</Para></Protocol>"
     else
       cmb_reserved_xml = generate_cmb_card_bank_xml(card_bank)
       payee_id = nil
