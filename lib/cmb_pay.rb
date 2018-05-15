@@ -63,6 +63,35 @@ module CmbPay
     '上海银行' => 313
   }.freeze
 
+  SUPPORTED_BANK_EN = {
+    'China Merchants Bank' => nil,
+    'Industrial Bank Co.,Ltd' => 309,
+    'China Citic Bank' => 302,
+    'China Minsheng Bank' => 305,
+    'China Everbright Bank' => 303,
+    'Huaxia Bank' => 304,
+    'Beijing Rural Commercial Bank' => 1418,
+    'Shenzhen Development Bank' => 307,
+    'Bank of China' => 104,
+    'Bank of Beijing' => 403,
+    'Postal Savings Bank of China' => 100,
+    'SPD Bank' => 310,
+    'BEA Bank of East Asia Limited' => 2502,
+    'CGB China Guangfa Bank' => 306,
+    'Bank of Nanjing' => 424,
+    'Bank of Communications' => 301,
+    'Ping An Bank' => 410,
+    'ICBC Industrial And Commercial Bank of China' => 102,
+    'HCCB Bank of Hangzhou' => 423,
+    'China Construction Bank' => 105,
+    'Bank of Ningbo' => 408,
+    'ABC Agricultural Bank of China' => 103,
+    'China Zheshang Bank' => 316,
+    'China Bohai Bank' => 318,
+    'Shanghai Rural Commercial Bank Co., Ltd.' => 402,
+    'Bank of Shanghai' => 313
+  }.freeze
+
   GOODS_TYPE = {
     '网上支付' => 54_011_600,
     '充值缴费' => 54_011_610,
@@ -261,6 +290,7 @@ module CmbPay
   def self.generate_cmb_card_bank_xml(card_bank)
     return "<CardBank>#{format('%04d', card_bank.to_i)}</CardBank>" if /^\d+$/ =~ card_bank.to_s
     card_back_id = SUPPORTED_BANK[card_bank]
+    card_back_id = SUPPORTED_BANK_EN[card_bank] if card_back_id.nil?
     return nil if card_back_id.nil?
     "<CardBank>#{format('%04d', card_back_id)}</CardBank>"
   end
